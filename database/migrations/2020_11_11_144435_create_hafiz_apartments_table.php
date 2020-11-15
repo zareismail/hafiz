@@ -17,7 +17,7 @@ class CreateHafizApartmentsTable extends Migration
             $table->id();
             $table->integer('number');
             $table->integer('floor');
-            $table->unsignedBigInteger('code', 8)->unique();
+            $table->unsignedMediumInteger('code')->unique();
             $table->text('description')->nullable(); 
             $table->foreignId('building_id')->constrained('hafiz_buildings');
             $table->auth();
