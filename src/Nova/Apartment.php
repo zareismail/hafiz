@@ -5,10 +5,8 @@ namespace Zareismail\Hafiz\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\{ID, Number, Trix, BelongsTo, HasManyThrough, DateTime};
 use Zareismail\NovaContracts\Nova\User;
-use Zareismail\Details\Nova\DetailGroup;
-// use Zareismail\Fields\Complex as Tab;
 
-class Apartment extends MoreDetailsResource
+class Apartment extends Resource
 {  
     /**
      * The model the resource corresponds to.
@@ -30,7 +28,7 @@ class Apartment extends MoreDetailsResource
 
             Number::make(__('Code'), function() {
                 return "<b>{$this->code}</b>";
-            })->asHtml(),
+            })->asHtml()->exceptOnForms(),
 
             BelongsTo::make(__('User'), 'auth', User::class)
                 ->withoutTrashed()
@@ -67,17 +65,7 @@ class Apartment extends MoreDetailsResource
     			->help(__('Write about your apartment and their features.'))
     			->withFiles('public'), 
 
-            // with(Tab::make(__('Details'), 'details'), function($complex) {
-            //     DetailGroup::newModel()->with('details')->get()->each(function($group) use ($complex) {
-            //         $complex->group($group->name, function() use ($group) {
-            //             return $group->details->map(function($detail) {
-            //                 return Number::make($detail->name);
-            //             })->all();
-            //         });
-            //     });
-
-            //     return $complex->help(__('A simple help description.'));
-            // }),
+            new Fields\Details($this),  
     	];
     }
 

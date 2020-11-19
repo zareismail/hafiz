@@ -5,7 +5,7 @@ namespace Zareismail\Hafiz\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\{ID, Text, Slug, Trix, BelongsTo, HasMany};
 
-class Building extends MoreDetailsResource
+class Building extends Resource
 {  
     /**
      * The model the resource corresponds to.
@@ -42,6 +42,8 @@ class Building extends MoreDetailsResource
     		Trix::make(__('Description'), 'description') 
     			->help(__('Write about your building and their features.'))
     			->withFiles('public'), 
+
+            new Fields\Details($this),  
 
             HasMany::make(__('Apartments'), 'apartments', Apartment::class),
     	];

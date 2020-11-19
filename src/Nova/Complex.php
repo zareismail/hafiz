@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\{ID, Text, Slug, Trix, HasMany, HasManyThrough};
 use Zareismail\Details\Nova\Detail;
 
-class Complex extends MoreDetailsResource
+class Complex extends Resource
 {  
     /**
      * The model the resource corresponds to.
@@ -33,13 +33,13 @@ class Complex extends MoreDetailsResource
 
     		Slug::make(__('Slug'), 'slug')
     			->from('name') 
-    			->help(__('This is part of the URL. If you don\'t info about it, leave it blank.')),
-
-            Feilds\Details::make(__('Features'), 'details', Detail::class),
+    			->help(__('This is part of the URL. If you don\'t info about it, leave it blank.')), 
 
     		Trix::make(__('Description'), 'description') 
     			->help(__('Write about your complex and their features.'))
     			->withFiles('public'), 
+
+            new Fields\Details($this),  
 
             HasMany::make(__('Buildings'), 'buildings', Building::class),
 

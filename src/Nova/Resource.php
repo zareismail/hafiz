@@ -21,6 +21,13 @@ abstract class Resource extends BaseResource
     public static $title = 'name';
 
     /**
+     * The relationships that should be eager loaded when performing an index query.
+     *
+     * @var array
+     */
+    public static $with = ['details'];
+
+    /**
      * The columns that should be searched.
      *
      * @var array
