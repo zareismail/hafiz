@@ -15,6 +15,7 @@ class HafizServiceProvider extends ServiceProvider
     protected $policies = [
         Models\HafizComplex::class => Policies\Complex::class,
         Models\HafizBuilding::class => Policies\Building::class,
+        Models\HafizApartment::class => Policies\Apartment::class,
     ];
 
     /**
@@ -37,11 +38,6 @@ class HafizServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        LaravelNova::resources([
-            Nova\Complex::class,
-            Nova\Building::class,
-            Nova\Apartment::class,
-        ]);
     } 
 
     /**
@@ -51,6 +47,10 @@ class HafizServiceProvider extends ServiceProvider
      */
     public function servingNova()
     {
-        # code...
+        LaravelNova::resources([
+            Nova\Complex::class,
+            Nova\Building::class,
+            Nova\Apartment::class,
+        ]);
     }
 }
