@@ -5,12 +5,15 @@ namespace Zareismail\Hafiz\Models;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\{Model as LaravelModel, SoftDeletes};
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Zareismail\Details\Concerns\InteractsWithDetails;  
 use Zareismail\Details\Contracts\MoreDetails;
 
-class Model extends LaravelModel implements MoreDetails
+
+class Model extends LaravelModel implements MoreDetails, HasMedia
 {
-    use HasFactory, SoftDeletes, InteractsWithDetails;
+    use HasFactory, SoftDeletes, InteractsWithDetails, HasMediaTrait;
 
     /**
      * The preapred details for sync.
@@ -89,4 +92,17 @@ class Model extends LaravelModel implements MoreDetails
 
 		return floatval($value) !== intval($value) ? floatval($value) : intval($value);
 	}  
+
+	public function registerMediaCollections(): void
+	{
+
+	    $this
+	        ->addMediaCollection('gallery')
+	        ->registerMediaConversions(function ($media) {
+	            $this
+	                ->addMediaConversion('thumb')
+	                ->width(100)
+	                ->height(100);
+	        });
+	}
 }

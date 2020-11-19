@@ -4,6 +4,7 @@ namespace Zareismail\Hafiz\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\{ID, Number, Trix, BelongsTo, HasManyThrough, DateTime};
+use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
 use Zareismail\NovaContracts\Nova\User;
 
 class Apartment extends Resource
@@ -41,7 +42,8 @@ class Apartment extends Resource
                 ->readonly($request->viaResource() === Complex::class),
 
             BelongsTo::make(__('Complex'), 'complex', Complex::class)
-                ->exceptOnForms(),
+                ->exceptOnForms()
+                ->showCreateRelationButton(),
 
             Number::make(__('Floor'), 'floor')
                 ->required()
@@ -66,6 +68,10 @@ class Apartment extends Resource
     			->withFiles('public'), 
 
             new Fields\Details($this),  
+
+            Medialibrary::make(__('Gallery'), 'gallery')
+                ->attachExisting()
+                ->autouploading(),
     	];
     }
 

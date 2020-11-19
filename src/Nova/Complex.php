@@ -4,6 +4,7 @@ namespace Zareismail\Hafiz\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\{ID, Text, Slug, Trix, HasMany, HasManyThrough};
+use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
 use Zareismail\Details\Nova\Detail;
 
 class Complex extends Resource
@@ -40,6 +41,10 @@ class Complex extends Resource
     			->withFiles('public'), 
 
             new Fields\Details($this),  
+             
+            Medialibrary::make(__('Gallery'), 'gallery')
+                ->attachExisting()
+                ->autouploading(), 
 
             HasMany::make(__('Buildings'), 'buildings', Building::class),
 

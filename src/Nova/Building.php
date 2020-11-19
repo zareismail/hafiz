@@ -4,6 +4,7 @@ namespace Zareismail\Hafiz\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\{ID, Text, Slug, Trix, BelongsTo, HasMany};
+use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
 
 class Building extends Resource
 {  
@@ -26,6 +27,7 @@ class Building extends Resource
     		ID::make(), 
 
             BelongsTo::make(__('Complex'), 'complex', Complex::class)
+                ->showCreateRelationButton()
                 ->withoutTrashed()
                 ->searchable()
                 ->nullable(),
@@ -43,7 +45,11 @@ class Building extends Resource
     			->help(__('Write about your building and their features.'))
     			->withFiles('public'), 
 
-            new Fields\Details($this),  
+            new Fields\Details($this),
+
+            Medialibrary::make(__('Gallery'), 'gallery')
+                ->attachExisting()
+                ->autouploading(), 
 
             HasMany::make(__('Apartments'), 'apartments', Apartment::class),
     	];
