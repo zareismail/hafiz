@@ -32,7 +32,7 @@ class Details extends MergeValue
 
 	public function fields()
 	{
-		return 	$this->groups()->map([$this, 'mapIntoComplexField'])->filter();
+		return 	$this->groups()->map([$this, 'mapIntoComplexField'])->filter()->values();
 	}
 
 	/**
