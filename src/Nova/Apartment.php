@@ -3,6 +3,7 @@
 namespace Zareismail\Hafiz\Nova; 
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\{ID, Number, Trix, BelongsTo, HasManyThrough, DateTime};
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
 use Zareismail\NovaContracts\Nova\User;
@@ -34,7 +35,10 @@ class Apartment extends Resource
             BelongsTo::make(__('User'), 'auth', User::class)
                 ->withoutTrashed()
                 ->default($request->user()->getKey())
-                ->searchable(), 
+                ->searchable()
+                ->canSee(function($request) {
+                    return $request->user()->can('update', Building::newModel());
+                }), 
 
             BelongsTo::make(__('Building'), 'building', Building::class)
                 ->withoutTrashed()
@@ -71,7 +75,10 @@ class Apartment extends Resource
 
             Medialibrary::make(__('Gallery'), 'gallery')
                 ->attachExisting()
-                ->autouploading(),
+                ->autouploading()
+                ->attachExisting(function ($query, $request, $model) {
+                    $query->authenticate();
+                }),
     	];
     }
 
@@ -84,5 +91,19 @@ class Apartment extends Resource
                 ->whereNumber($value)
                 ->whereKeyNot($this->id)
                 ->count() == 0;
-        }
+    }
+
+    /**
+     * Build an "index" query for the given resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query->when(! $request->user()->can('update', Building::newModel()), function($query) {
+            $query->authenticate();
+        });
+    }
 }
