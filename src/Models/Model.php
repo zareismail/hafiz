@@ -9,11 +9,13 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Zareismail\Details\Concerns\InteractsWithDetails;  
 use Zareismail\Details\Contracts\MoreDetails;
+use Zareismail\Costable\Concerns\InteractsWithCosts;
+use Zareismail\Costable\Contracts\Costable;
 
 
-class Model extends LaravelModel implements MoreDetails, HasMedia
+class Model extends LaravelModel implements MoreDetails, HasMedia, Costable
 {
-    use HasFactory, SoftDeletes, InteractsWithDetails, HasMediaTrait;
+    use HasFactory, SoftDeletes, InteractsWithDetails, HasMediaTrait, InteractsWithCosts;
 
     /**
      * The preapred details for sync.

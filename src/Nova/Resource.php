@@ -4,6 +4,7 @@ namespace Zareismail\Hafiz\Nova;
 
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Zareismail\NovaContracts\Nova\Resource as BaseResource;
+use Zareismail\NovaPolicy\Helper;
 
 abstract class Resource extends BaseResource
 { 
@@ -71,7 +72,10 @@ abstract class Resource extends BaseResource
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function relatableQuery(NovaRequest $request, $query)
-    {
-        return parent::relatableQuery($request, $query);
-    }
+    {  
+        return  parent::relatableQuery($request, $query)
+                    ->when(Helper::isOwnable(static::newModel()), function($query) {
+                        $query->authenticate();
+                    });
+    } 
 }

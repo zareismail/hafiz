@@ -18,6 +18,29 @@ class Apartment extends Resource
     public static $model = \Zareismail\Hafiz\Models\HafizApartment::class;
 
     /**
+     * The single value that should be used to represent the resource when being displayed.
+     *
+     * @var string
+     */
+    public static $title = 'number';
+
+    /**
+     * The columns that should be searched.
+     *
+     * @var array
+     */
+    public static $search = [
+        'id', 'number'
+    ];
+
+    /**
+     * The relationships that should be eager loaded when performing an index query.
+     *
+     * @var array
+     */
+    public static $with = ['details', 'building'];
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -102,8 +125,16 @@ class Apartment extends Resource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->when(! $request->user()->can('update', Building::newModel()), function($query) {
-            $query->authenticate();
-        });
+        return $query->authenticate();
+    }
+
+    /**
+     * Get the value that should be displayed to represent the resource.
+     *
+     * @return string
+     */
+    public function title()
+    { 
+        return forward_static_call([new Building($this->building), 'title']).': '.$this->number;
     }
 }
