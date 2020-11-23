@@ -2,8 +2,7 @@
 
 namespace Zareismail\Hafiz\Nova; 
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Illuminate\Http\Request; 
 use Laravel\Nova\Fields\{ID, Number, Trix, BelongsTo, HasManyThrough, DateTime};
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
 use Zareismail\NovaContracts\Nova\User;
@@ -114,18 +113,6 @@ class Apartment extends Resource
                 ->whereNumber($value)
                 ->whereKeyNot($this->id)
                 ->count() == 0;
-    }
-
-    /**
-     * Build an "index" query for the given resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return $query->authenticate();
     }
 
     /**

@@ -105,6 +105,16 @@ class Model extends LaravelModel implements MoreDetails, HasMedia, Costable
 	                ->addMediaConversion('thumb')
 	                ->width(100)
 	                ->height(100);
+
+	            $this
+	                ->addMediaConversion('mid')
+	                ->width(720)
+	                ->height(480);
+
+	            $this
+	                ->addMediaConversion('larg')
+	                ->width(1080)
+	                ->height(720);
 	        });
 	}
 }

@@ -52,6 +52,8 @@ class Building extends Resource
                 ->autouploading(), 
 
             HasMany::make(__('Apartments'), 'apartments', Apartment::class),
+
+            HasMany::make(__('Common Areas'), 'areas', CommonArea::class),
     	];
     }
 }

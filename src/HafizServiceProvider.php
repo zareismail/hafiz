@@ -16,6 +16,7 @@ class HafizServiceProvider extends ServiceProvider
         Models\HafizComplex::class => Policies\Complex::class,
         Models\HafizBuilding::class => Policies\Building::class,
         Models\HafizApartment::class => Policies\Apartment::class,
+        Models\HafizCommonArea::class => Policies\CommonArea::class,
     ];
 
     /**
@@ -51,6 +52,7 @@ class HafizServiceProvider extends ServiceProvider
             Nova\Complex::class,
             Nova\Building::class,
             Nova\Apartment::class,
+            Nova\CommonArea::class,
         ]);
     }
 }

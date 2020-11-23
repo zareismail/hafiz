@@ -23,4 +23,14 @@ class HafizBuilding extends Model
 	{ 
 		return $this->hasMany(HafizApartment::class, 'building_id');
 	}
+
+	/**
+	 * Query the related apartments.
+	 * 
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function areas()
+	{ 
+		return $this->hasMany(HafizCommonArea::class, 'building_id');
+	}
 }
