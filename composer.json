@@ -13,6 +13,7 @@
         "zareismail/complex": "~0.1",
         "zareismail/details": "~0.1",
         "zareismail/costable": "~0.1",
+        "zareismail/nova-location": "~0.1",
         "superlatif/nova-tag-input": "^1.4",
         "staudenmeir/belongs-to-through": "^2.11"
     },
