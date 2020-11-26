@@ -21,6 +21,7 @@ class CreateHafizApartmentsTable extends Migration
             $table->text('description')->nullable(); 
             $table->foreignId('building_id')->constrained('hafiz_buildings');
             $table->auth();
+            $table->config();
             $table->timestamps();
             $table->softDeletes(); 
         });

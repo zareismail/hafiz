@@ -67,6 +67,8 @@ class CommonArea extends Resource
     		Trix::make(__('What is its use?'), 'explanation') 
     			->help(__('Write about this area and its uses.')), 
 
+            new Fields\Costs($this), 
+
             new Fields\Details($this),  
 
             Medialibrary::make(__('Gallery'), 'gallery')

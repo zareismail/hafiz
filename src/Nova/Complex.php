@@ -48,6 +48,8 @@ class Complex extends Resource
     			->help(__('Write about your complex and their features.'))
     			->withFiles('public'), 
 
+            new Fields\Costs($this), 
+
             new Fields\Details($this),  
              
             Medialibrary::make(__('Gallery'), 'gallery')

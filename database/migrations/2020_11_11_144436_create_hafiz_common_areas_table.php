@@ -19,6 +19,7 @@ class CreateHafizCommonAreasTable extends Migration
             $table->integer('floor'); 
             $table->text('explanation')->nullable();
             $table->foreignId('building_id')->constrained('hafiz_buildings'); 
+            $table->config(); 
             $table->timestamps();
             $table->softDeletes(); 
         });

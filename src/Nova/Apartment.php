@@ -94,6 +94,8 @@ class Apartment extends Resource
     			->help(__('Write about your apartment and their features.'))
     			->withFiles('public'), 
 
+            new Fields\Costs($this), 
+
             new Fields\Details($this),  
 
             Medialibrary::make(__('Gallery'), 'gallery')

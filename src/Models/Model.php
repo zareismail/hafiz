@@ -12,6 +12,7 @@ use Zareismail\Details\Concerns\InteractsWithDetails;
 use Zareismail\Details\Contracts\MoreDetails;
 use Zareismail\Costable\Concerns\InteractsWithCosts;
 use Zareismail\Costable\Contracts\Costable;
+use Zareismail\Costable\Models\CostableFee;
 use Zareismail\NovaLocation\Locatable;
 use Zareismail\Hafiz\Concerns\InteractsWithEnvironmentals;
 use Zareismail\Hafiz\Contracts\Reportable;
@@ -41,6 +42,17 @@ class Model extends LaravelModel implements MoreDetails, HasMedia, Costable, Rep
 		static::saved(function($model) {
 			$model->syncDetailsIfNotSynced(); 
 		});
+	}
+
+	/**
+	 * Get the default amount for the CostableCost.
+	 * 
+	 * @param \Zareismail\Costable\Models\CostableFee $fee
+	 * @return float
+	 */
+	public function dueAmount(CostableFee $fee): float
+	{
+		return floatval($this->getConfig("fees.{$fee->id}"));
 	}
 
 	/**
