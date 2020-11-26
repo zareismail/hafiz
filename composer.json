@@ -8,10 +8,11 @@
     "license": "MIT",
     "require": {
         "php": ">=7.1.0",
-        "armincms/many-to-many": "*",
-        "zareismail/nova-contracts": "*",
+        "armincms/many-to-many": "~0.1",
+        "zareismail/nova-contracts": "0.1",
         "zareismail/complex": "~0.1",
-        "zareismail/details": "*",
+        "zareismail/details": "~0.1",
+        "zareismail/costable": "~0.1",
         "superlatif/nova-tag-input": "^1.4",
         "staudenmeir/belongs-to-through": "^2.11"
     },
