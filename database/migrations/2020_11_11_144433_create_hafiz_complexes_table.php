@@ -17,6 +17,9 @@ class CreateHafizComplexesTable extends Migration
             $table->id();
             $table->slugging('name');
             $table->text('description')->nullable(); 
+            $table->location('zone');
+            $table->config();
+            $table->coordinates();
             $table->timestamps();
             $table->softDeletes();
         });

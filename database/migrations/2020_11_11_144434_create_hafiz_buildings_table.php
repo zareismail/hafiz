@@ -16,8 +16,12 @@ class CreateHafizBuildingsTable extends Migration
         Schema::create('hafiz_buildings', function (Blueprint $table) {
             $table->id();
             $table->slugging('name');
+            $table->integer('number')->nullable();
             $table->text('description')->nullable(); 
             $table->foreignId('complex_id')->constrained('hafiz_complexes');
+            $table->location('zone');
+            $table->config();
+            $table->coordinates();
             $table->timestamps();
             $table->softDeletes();
         });

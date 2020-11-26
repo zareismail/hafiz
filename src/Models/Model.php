@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\{Model as LaravelModel, SoftDeletes};
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Zareismail\Contracts\Concerns\InteractsWithConfigs;
 use Zareismail\Details\Concerns\InteractsWithDetails;  
 use Zareismail\Details\Contracts\MoreDetails;
 use Zareismail\Costable\Concerns\InteractsWithCosts;
 use Zareismail\Costable\Contracts\Costable;
+use Zareismail\NovaLocation\Locatable;
 use Zareismail\Hafiz\Concerns\InteractsWithEnvironmentals;
 use Zareismail\Hafiz\Contracts\Reportable;
 
@@ -18,7 +20,7 @@ use Zareismail\Hafiz\Contracts\Reportable;
 class Model extends LaravelModel implements MoreDetails, HasMedia, Costable, Reportable
 {
     use HasFactory, SoftDeletes, InteractsWithDetails, HasMediaTrait, InteractsWithCosts;
-    use InteractsWithEnvironmentals;
+    use InteractsWithEnvironmentals, Locatable, InteractsWithConfigs;
 
     /**
      * The preapred details for sync.
@@ -75,10 +77,10 @@ class Model extends LaravelModel implements MoreDetails, HasMedia, Costable, Rep
      * @return $this
      */
     public function fillJsonAttribute($key, $value)
-    { 
-    	if($id = Str::after($key, 'detail->')) { 
+    {  
+    	if(Str::startsWith($key, 'detail->')) { 
     		if(! is_null($value = $this->castDetailsValue($value))) { 
-    			$this->syncDetails[$id] = compact('value');
+    			$this->syncDetails[Str::after($key, 'detail->')] = compact('value');
     		} 
 
     		return $this;

@@ -3,8 +3,10 @@
 namespace Zareismail\Hafiz\Nova; 
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\{ID, Text, Slug, Trix, BelongsTo, HasMany, MorphMany};
+use Laravel\Nova\Panel;
+use Laravel\Nova\Fields\{ID, Text, Slug, Number, Trix, BelongsTo, HasMany, MorphMany};
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
+use Zareismail\NovaLocation\Nova\Zone;
 use Zareismail\Costable\Nova\Cost;
 
 class Building extends Resource
@@ -33,6 +35,18 @@ class Building extends Resource
                 ->searchable()
                 ->nullable(),
 
+            BelongsTo::make(__('Zone'), 'zone', Zone::class)
+                ->showCreateRelationButton()
+                ->withoutTrashed()
+                ->searchable()
+                ->nullable()
+                ->rules('required_without:complex'),
+
+            Number::make(__('Number'), 'number')
+                ->required()
+                ->rules('required')
+                ->help(__('What is the number of your building?')),
+
     		Text::make(__('Name'), 'name')
     			->required()
     			->rules('required')
@@ -51,6 +65,10 @@ class Building extends Resource
             Medialibrary::make(__('Gallery'), 'gallery')
                 ->attachExisting()
                 ->autouploading(), 
+
+            Panel::make(__('Contacts Details'), $this->filter([
+                new Fields\ContactsDetails($this)
+            ])),
 
             HasMany::make(__('Apartments'), 'apartments', Apartment::class),
 

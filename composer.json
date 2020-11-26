@@ -15,6 +15,8 @@
         "zareismail/costable": "~0.1",
         "zareismail/nova-location": "~0.1",
         "superlatif/nova-tag-input": "^1.4",
+        "dillingham/nova-items-field": "^0.6.0", 
+        "genealabs/nova-map-marker-field": "^0.3.0",
         "staudenmeir/belongs-to-through": "^2.11"
     },
     "autoload": {

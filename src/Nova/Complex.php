@@ -3,8 +3,10 @@
 namespace Zareismail\Hafiz\Nova; 
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\{ID, Text, Slug, Trix, HasMany, MorphMany, HasManyThrough};
+use Laravel\Nova\Panel;
+use Laravel\Nova\Fields\{ID, Text, Slug, Trix, BelongsTo, HasMany, MorphMany, HasManyThrough};
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
+use Zareismail\NovaLocation\Nova\Zone;
 use Zareismail\Details\Nova\Detail;
 use Zareismail\Costable\Nova\Cost;
 
@@ -28,10 +30,15 @@ class Complex extends Resource
     	return [
     		ID::make(),
 
-    		Text::make(__('Name'), 'name')
-    			->required()
-    			->rules('required')
-    			->help(__('What is the name of your complex?')),
+            BelongsTo::make(__('Zone'), 'zone', Zone::class)
+                ->showCreateRelationButton()
+                ->withoutTrashed()
+                ->searchable(), 
+
+            Text::make(__('Name'), 'name')
+                ->required()
+                ->rules('required')
+                ->help(__('What is the name of your complex?')),
 
     		Slug::make(__('Slug'), 'slug')
     			->from('name') 
@@ -46,6 +53,10 @@ class Complex extends Resource
             Medialibrary::make(__('Gallery'), 'gallery')
                 ->attachExisting()
                 ->autouploading(), 
+
+            Panel::make(__('Contacts Details'), $this->filter([
+                new Fields\ContactsDetails($this)
+            ])),
 
             HasMany::make(__('Buildings'), 'buildings', Building::class),
 
