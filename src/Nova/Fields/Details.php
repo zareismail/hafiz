@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\MergeValue;
 use Laravel\Nova\Resource;
 use Zareismail\Fields\Complex;
 use Zareismail\Details\Models\DetailGroup;
+use Zareismail\Hafiz\Nova\Places;
 
 class Details extends MergeValue
 { 
@@ -32,7 +33,9 @@ class Details extends MergeValue
 
 	public function fields()
 	{
-		return 	$this->groups()->map([$this, 'mapIntoComplexField'])->filter()->values();
+		return 	$this->groups()->filter(function($group) {
+			return Places::isShownOn($this->resource, $group) && $group->details->isNotEmpty();
+		})->map([$this, 'mapIntoComplexField'])->filter()->values();
 	}
 
 	/**
@@ -50,7 +53,10 @@ class Details extends MergeValue
 		if($fields = $group->details->fields($this->resource)->values()->all()) {
             return Complex::make($group->name, function() use ($fields) {
                 return collect($fields)->each->resolveUsing([$this, 'resolveUsing']);
-            }); 
+            })
+            ->expansionOverflow(intval(Places::option('expansion_overflow', 2)))
+            ->groupOverflow(intval(Places::option('group_overflow', 2)));  
+
         }
 	}
 

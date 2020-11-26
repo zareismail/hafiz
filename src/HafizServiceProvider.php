@@ -52,6 +52,7 @@ class HafizServiceProvider extends ServiceProvider
     public function servingNova()
     {
         LaravelNova::resources([
+            Nova\Places::class,
             Nova\Complex::class,
             Nova\Building::class,
             Nova\Apartment::class,
