@@ -11,11 +11,14 @@ use Zareismail\Details\Concerns\InteractsWithDetails;
 use Zareismail\Details\Contracts\MoreDetails;
 use Zareismail\Costable\Concerns\InteractsWithCosts;
 use Zareismail\Costable\Contracts\Costable;
+use Zareismail\Hafiz\Concerns\InteractsWithEnvironmentals;
+use Zareismail\Hafiz\Contracts\Reportable;
 
 
-class Model extends LaravelModel implements MoreDetails, HasMedia, Costable
+class Model extends LaravelModel implements MoreDetails, HasMedia, Costable, Reportable
 {
     use HasFactory, SoftDeletes, InteractsWithDetails, HasMediaTrait, InteractsWithCosts;
+    use InteractsWithEnvironmentals;
 
     /**
      * The preapred details for sync.

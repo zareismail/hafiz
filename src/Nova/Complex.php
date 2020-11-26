@@ -3,9 +3,10 @@
 namespace Zareismail\Hafiz\Nova; 
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\{ID, Text, Slug, Trix, HasMany, HasManyThrough};
+use Laravel\Nova\Fields\{ID, Text, Slug, Trix, HasMany, MorphMany, HasManyThrough};
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
 use Zareismail\Details\Nova\Detail;
+use Zareismail\Costable\Nova\Cost;
 
 class Complex extends Resource
 {  
@@ -49,6 +50,10 @@ class Complex extends Resource
             HasMany::make(__('Buildings'), 'buildings', Building::class),
 
             HasManyThrough::make(__('Apartments'), 'apartments', Apartment::class),
+
+            MorphMany::make(__('Costs'), 'costs', Cost::class),
+            
+            HasMany::make(__('Environmental Reports'), 'reports', EnvironmentalReport::class),
     	];
     }
 }

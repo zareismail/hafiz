@@ -17,6 +17,9 @@ class HafizServiceProvider extends ServiceProvider
         Models\HafizBuilding::class => Policies\Building::class,
         Models\HafizApartment::class => Policies\Apartment::class,
         Models\HafizCommonArea::class => Policies\CommonArea::class,
+        Models\HafizMeasureUnit::class => Policies\MeasureUnit::class,
+        Models\HafizEnvironmental::class => Policies\Environmental::class,
+        Models\HafizEnvironmentalReport::class => Policies\EnvironmentalReport::class,
     ];
 
     /**
@@ -53,6 +56,9 @@ class HafizServiceProvider extends ServiceProvider
             Nova\Building::class,
             Nova\Apartment::class,
             Nova\CommonArea::class,
+            Nova\MeasureUnit::class,
+            Nova\Environmental::class,
+            Nova\EnvironmentalReport::class,
         ]);
     }
 }

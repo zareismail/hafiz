@@ -3,8 +3,9 @@
 namespace Zareismail\Hafiz\Nova; 
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\{ID, Text, Slug, Trix, BelongsTo, HasMany};
+use Laravel\Nova\Fields\{ID, Text, Slug, Trix, BelongsTo, HasMany, MorphMany};
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
+use Zareismail\Costable\Nova\Cost;
 
 class Building extends Resource
 {  
@@ -54,6 +55,8 @@ class Building extends Resource
             HasMany::make(__('Apartments'), 'apartments', Apartment::class),
 
             HasMany::make(__('Common Areas'), 'areas', CommonArea::class),
+
+            MorphMany::make(__('Costs'), 'costs', Cost::class),
     	];
     }
 }

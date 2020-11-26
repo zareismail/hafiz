@@ -13,7 +13,7 @@ abstract class Resource extends BaseResource
      *
      * @var string
      */
-    public static $group = 'Hafiz'; 
+    public static $group = 'Properties'; 
 
     /**
      * The single value that should be used to represent the resource when being displayed.

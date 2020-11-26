@@ -3,9 +3,10 @@
 namespace Zareismail\Hafiz\Nova; 
 
 use Illuminate\Http\Request; 
-use Laravel\Nova\Fields\{ID, Number, Trix, BelongsTo, HasManyThrough, DateTime};
+use Laravel\Nova\Fields\{ID, Number, Trix, BelongsTo, HasMany, MorphMany, HasManyThrough, DateTime};
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
 use Zareismail\NovaContracts\Nova\User;
+use Zareismail\Costable\Nova\Cost;
 
 class Apartment extends Resource
 {  
@@ -101,6 +102,10 @@ class Apartment extends Resource
                 ->attachExisting(function ($query, $request, $model) {
                     $query->authenticate();
                 }),
+
+            MorphMany::make(__('Costs'), 'costs', Cost::class),
+
+            HasMany::make(__('Environmental Reports'), 'reports', EnvironmentalReport::class),
     	];
     }
 

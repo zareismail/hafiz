@@ -3,7 +3,7 @@
 namespace Zareismail\Hafiz\Nova; 
 
 use Illuminate\Http\Request; 
-use Laravel\Nova\Fields\{ID, Text, Number, Trix, BelongsTo};
+use Laravel\Nova\Fields\{ID, Text, Number, Trix, BelongsTo, HasMany};
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary; 
 
 class CommonArea extends Resource
@@ -75,6 +75,8 @@ class CommonArea extends Resource
                 ->attachExisting(function ($query, $request, $model) {
                     $query->authenticate();
                 }),
+
+            HasMany::make(__('Environmental Reports'), 'reports', EnvironmentalReport::class),
     	];
     }
 }
