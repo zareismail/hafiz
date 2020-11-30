@@ -18,9 +18,10 @@ use Zareismail\Costable\Models\CostableFee;
 use Zareismail\NovaLocation\Locatable;
 use Zareismail\Hafiz\Concerns\InteractsWithEnvironmentals;
 use Zareismail\Hafiz\Contracts\Reportable;
+use Zareismail\Chapar\Contracts\Recipient;
 
 
-class Model extends LaravelModel implements MoreDetails, HasMedia, Costable, Reportable, Contractable
+class Model extends LaravelModel implements MoreDetails, HasMedia, Costable, Reportable, Contractable, Recipient
 {
     use HasFactory, SoftDeletes, InteractsWithDetails, HasMediaTrait, InteractsWithCosts;
     use InteractsWithEnvironmentals, Locatable, InteractsWithConfigs, InteractsWithContracts;

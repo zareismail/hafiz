@@ -14,6 +14,7 @@
         "zareismail/details": "~0.1",
         "zareismail/costable": "~0.1",
         "zareismail/bonchaq": "~0.1",
+        "zareismail/chapar": "~0.1",
         "zareismail/nova-location": "~0.1",
         "superlatif/nova-tag-input": "^1.4",
         "dillingham/nova-items-field": "^0.6.0", 
