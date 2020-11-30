@@ -10,6 +10,8 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Zareismail\Contracts\Concerns\InteractsWithConfigs;
 use Zareismail\Details\Concerns\InteractsWithDetails;  
 use Zareismail\Details\Contracts\MoreDetails;
+use Zareismail\Bonchaq\Concerns\InteractsWithContracts;
+use Zareismail\Bonchaq\Contracts\Contractable;
 use Zareismail\Costable\Concerns\InteractsWithCosts;
 use Zareismail\Costable\Contracts\Costable;
 use Zareismail\Costable\Models\CostableFee;
@@ -18,10 +20,10 @@ use Zareismail\Hafiz\Concerns\InteractsWithEnvironmentals;
 use Zareismail\Hafiz\Contracts\Reportable;
 
 
-class Model extends LaravelModel implements MoreDetails, HasMedia, Costable, Reportable
+class Model extends LaravelModel implements MoreDetails, HasMedia, Costable, Reportable, Contractable
 {
     use HasFactory, SoftDeletes, InteractsWithDetails, HasMediaTrait, InteractsWithCosts;
-    use InteractsWithEnvironmentals, Locatable, InteractsWithConfigs;
+    use InteractsWithEnvironmentals, Locatable, InteractsWithConfigs, InteractsWithContracts;
 
     /**
      * The preapred details for sync.
