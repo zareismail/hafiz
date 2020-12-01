@@ -13,9 +13,11 @@ class HafizServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
+        Models\HafizAccount::class => Policies\Account::class,
         Models\HafizComplex::class => Policies\Complex::class,
         Models\HafizBuilding::class => Policies\Building::class,
         Models\HafizApartment::class => Policies\Apartment::class,
+        Models\HafizInsurance::class => Policies\Insurance::class,
         Models\HafizCommonArea::class => Policies\CommonArea::class,
         Models\HafizMeasureUnit::class => Policies\MeasureUnit::class,
         Models\HafizEnvironmental::class => Policies\Environmental::class,
@@ -52,6 +54,8 @@ class HafizServiceProvider extends ServiceProvider
     public function servingNova()
     {
         LaravelNova::resources([
+            Nova\Account::class,
+            Nova\Insurance::class,
             Nova\Places::class,
             Nova\Complex::class,
             Nova\Building::class,

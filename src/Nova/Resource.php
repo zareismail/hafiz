@@ -47,9 +47,7 @@ abstract class Resource extends BaseResource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->when(Helper::isOwnable(static::newModel()), function($query) {
-            $query->authenticate();
-        });
+        return $query;
     }
 
     /**
@@ -87,9 +85,6 @@ abstract class Resource extends BaseResource
      */
     public static function relatableQuery(NovaRequest $request, $query)
     {  
-        return  parent::relatableQuery($request, $query)
-                    ->when(Helper::isOwnable(static::newModel()), function($query) {
-                        $query->authenticate();
-                    });
+        return static::authenticateQuery($request, parent::relatableQuery($request, $query));
     } 
 }
