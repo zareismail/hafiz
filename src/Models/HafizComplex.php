@@ -1,9 +1,9 @@
 <?php
 
 namespace Zareismail\Hafiz\Models;
- 
+  
 
-class HafizComplex extends Model
+class HafizComplex extends Model 
 {  
 	/**
 	 * Query the related buildings.
@@ -25,5 +25,5 @@ class HafizComplex extends Model
 		return $this->hasManyThrough(
 			HafizApartment::class, HafizBuilding::class, 'complex_id', 'building_id' 
 		);
-	}
+	} 
 }

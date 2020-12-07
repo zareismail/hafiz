@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\{ID, Number, Trix, BelongsTo, HasMany, MorphMany, HasManyThrough, DateTime};
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
 use Zareismail\NovaContracts\Nova\User;
+use Zareismail\Fields\{BelongsTo as CascadeBelongsTo, MorphTo as CascadeMorphTo};
 use Zareismail\Costable\Nova\Cost;
 
 class Apartment extends Resource
@@ -61,12 +62,11 @@ class Apartment extends Resource
                 ->searchable()
                 ->canSee(function($request) {
                     return $request->user()->can('update', Building::newModel());
-                }), 
+                }),  
 
-            BelongsTo::make(__('Building'), 'building', Building::class)
-                ->withoutTrashed()
-                ->searchable()
-                ->readonly($request->viaResource() === Complex::class),
+            CascadeBelongsTo::make(__('Building'), 'building', Building::class)
+                ->readonly($request->viaResource() === Complex::class)
+                ->searchable(),
 
             BelongsTo::make(__('Complex'), 'complex', Complex::class)
                 ->exceptOnForms()
