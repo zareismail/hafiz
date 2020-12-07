@@ -19,10 +19,10 @@ use Zareismail\NovaLocation\Locatable;
 use Zareismail\Hafiz\Concerns\InteractsWithEnvironmentals;
 use Zareismail\Hafiz\Contracts\Reportable;
 use Zareismail\Chapar\Contracts\Recipient;
-use Zareismail\maintainable\Contracts\maintainable;
+use Zareismail\Maintainable\Contracts\Maintainable;
 
 
-class Model extends LaravelModel implements MoreDetails, HasMedia, Costable, Reportable, Contractable, Recipient, maintainable
+class Model extends LaravelModel implements MoreDetails, HasMedia, Costable, Reportable, Contractable, Recipient, Maintainable
 {
     use HasFactory, SoftDeletes, InteractsWithDetails, HasMediaTrait, InteractsWithCosts;
     use InteractsWithEnvironmentals, Locatable, InteractsWithConfigs, InteractsWithContracts;
