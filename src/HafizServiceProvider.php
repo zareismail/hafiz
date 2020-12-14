@@ -32,8 +32,10 @@ class HafizServiceProvider extends ServiceProvider
     public function boot()
     {  
         $this->loadJsonTranslationsFrom(__DIR__.'/../resources/lang');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'hafiz');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations'); 
-        LaravelNova::serving([$this, 'servingNova']);
+        LaravelNova::serving([$this, 'servingNova']); 
+        DynamicRelationship::register();
         $this->registerPolicies();
     } 
 
@@ -55,7 +57,10 @@ class HafizServiceProvider extends ServiceProvider
     {
         LaravelNova::resources([
             Nova\Account::class,
+            Nova\Profile::class,
+            Nova\Tenant::class,
             Nova\Insurance::class,
+            Nova\Registration::class,
             Nova\Places::class,
             Nova\Complex::class,
             Nova\Building::class,
@@ -64,6 +69,35 @@ class HafizServiceProvider extends ServiceProvider
             Nova\MeasureUnit::class,
             Nova\Environmental::class,
             Nova\EnvironmentalReport::class,
+        ]); 
+
+        LaravelNova::tools([
+            \Zareismail\QuickTheme\QuickTheme::cards([
+                tap(\Zareismail\Cards\Profile::make(), function($profile) {
+                    $profile->resourceUsing(Nova\Profile::class)->avatarUsing(function($user) {
+                        if($path = data_get($user, 'profile.image')) {
+                            return \Storage::disk('public')->url($path);
+                        } 
+                    });
+                }),
+            ])
+            ->navigations([
+                Navigations\Tenancy::class,
+                Navigations\PreviousTenancy::class,
+                Navigations\Maturity::class,
+                Navigations\Payments::class,
+                Navigations\CurrentContract::class,
+                Navigations\ListContracts::class,
+                Navigations\ReportProblem::class,
+                Navigations\Issues::class,
+                Navigations\SendToOwner::class,
+                Navigations\Letters::class,
+                Navigations\ReportEnvironmental::class,
+                Navigations\EnvironmentalReports::class,
+            ])
+            ->canSee(function($request) { 
+                return Helper::isTenant($request->user());
+            }),
         ]);
-    }
+    } 
 }
