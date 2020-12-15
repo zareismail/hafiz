@@ -12,6 +12,7 @@
         "zareismail/nova-contracts": "~0.1",
         "zareismail/quick-theme": "dev-master",
         "zareismail/nova-profile": "dev-master",
+        "zareismail/shaghool": "~0.1",
         "zareismail/complex": "~0.1",
         "zareismail/details": "~0.1",
         "zareismail/costable": "~0.1",

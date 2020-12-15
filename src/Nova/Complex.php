@@ -64,9 +64,7 @@ class Complex extends Resource
 
             // HasManyThrough::make(__('Apartments'), 'apartments', Apartment::class),
 
-            MorphMany::make(__('Costs'), 'costs', Cost::class),
-            
-            HasMany::make(__('Environmental Reports'), 'reports', EnvironmentalReport::class),
+            MorphMany::make(__('Costs'), 'costs', Cost::class), 
     	];
     }
 }

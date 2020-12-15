@@ -76,9 +76,7 @@ class CommonArea extends Resource
                 ->autouploading()
                 ->attachExisting(function ($query, $request, $model) {
                     $query->authenticate();
-                }),
-
-            HasMany::make(__('Environmental Reports'), 'reports', EnvironmentalReport::class),
+                }), 
     	];
     }
 }

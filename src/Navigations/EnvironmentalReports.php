@@ -34,7 +34,7 @@ class EnvironmentalReports extends Navigation
     public static function params(): array
     {
         return [
-            'resourceName' => 'environmental-reports',
+            'resourceName' => 'shaghool-per-capitas',
         ];
     }
 }

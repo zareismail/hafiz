@@ -15,17 +15,17 @@ use Zareismail\Bonchaq\Contracts\Contractable;
 use Zareismail\Costable\Concerns\InteractsWithCosts;
 use Zareismail\Costable\Contracts\Costable;
 use Zareismail\Costable\Models\CostableFee;
-use Zareismail\NovaLocation\Locatable;
-use Zareismail\Hafiz\Concerns\InteractsWithEnvironmentals;
-use Zareismail\Hafiz\Contracts\Reportable;
+use Zareismail\NovaLocation\Locatable;  
+use Zareismail\Shaghool\Contracts\Measurable;
+use Zareismail\Shaghool\Concerns\InteractsWithPerCapita;
 use Zareismail\Chapar\Contracts\Recipient;
 use Zareismail\Maintainable\Contracts\Maintainable;
 
 
-class Model extends LaravelModel implements MoreDetails, HasMedia, Costable, Reportable, Contractable, Recipient, Maintainable
+class Model extends LaravelModel implements MoreDetails, HasMedia, Costable, Measurable, Contractable, Recipient, Maintainable
 {
     use HasFactory, SoftDeletes, InteractsWithDetails, HasMediaTrait, InteractsWithCosts;
-    use InteractsWithEnvironmentals, Locatable, InteractsWithConfigs, InteractsWithContracts;
+    use Locatable, InteractsWithConfigs, InteractsWithContracts, InteractsWithPerCapita; 
 
     /**
      * The preapred details for sync.

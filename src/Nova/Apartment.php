@@ -105,9 +105,7 @@ class Apartment extends Resource
                     $query->authenticate();
                 }),
 
-            MorphMany::make(__('Costs'), 'costs', Cost::class),
-
-            HasMany::make(__('Environmental Reports'), 'reports', EnvironmentalReport::class),
+            MorphMany::make(__('Costs'), 'costs', Cost::class), 
     	];
     }
 
