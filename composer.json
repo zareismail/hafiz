@@ -20,7 +20,7 @@
         "zareismail/chapar": "~0.1",
         "zareismail/maintainable": "~1.0",
         "zareismail/nova-location": "~0.1",
-        "zareismail/nova-cascade": "~0.1",
+        "zareismail/nova-cascade": "~0.2",
         "superlatif/nova-tag-input": "^1.4",
         "dillingham/nova-items-field": "^0.6.0", 
         "genealabs/nova-map-marker-field": "^0.3.0",
