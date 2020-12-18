@@ -2,8 +2,9 @@
 
 namespace Zareismail\Hafiz\Models;  
 
+use Zareismail\Fields\Contracts\Cascade;
 
-class HafizCommonArea extends Model
+class HafizCommonArea extends Model implements Cascade
 {    
     /**
      * The attributes that should be cast.
@@ -23,4 +24,14 @@ class HafizCommonArea extends Model
 	{ 
 		return $this->belongsTo(HafizBuilding::class);
 	} 
+	
+	/**
+	 * Query the realted resource.
+	 * 
+	 * @return \Illuminate\Database\Eloquent\Relations\HasOneOrMany
+	 */
+	public function parent()
+	{
+		return $this->building();
+	}
 }

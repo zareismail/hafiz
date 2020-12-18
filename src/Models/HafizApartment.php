@@ -3,8 +3,9 @@
 namespace Zareismail\Hafiz\Models;  
     
 use Znck\Eloquent\Traits\BelongsToThrough;
+use Zareismail\Fields\Contracts\Cascade;
 
-class HafizApartment extends AuthorizableModel
+class HafizApartment extends AuthorizableModel implements Cascade
 {   
 	use BelongsToThrough;
 
@@ -81,4 +82,14 @@ class HafizApartment extends AuthorizableModel
 			HafizBuilding::class=> 'building_id' 
 		]);
 	}
+
+    /**
+     * Query the realted resource.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOneOrMany
+     */
+    public function parent()
+    {
+        return $this->building();
+    }
 }
