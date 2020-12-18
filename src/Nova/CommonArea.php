@@ -28,7 +28,7 @@ class CommonArea extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'number'
+        'id', 'name', 'floor'
     ];
 
     /**
