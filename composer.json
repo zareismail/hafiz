@@ -18,7 +18,7 @@
         "zareismail/costable": "~0.1",
         "zareismail/bonchaq": "~0.1",
         "zareismail/chapar": "~1.0",
-        "zareismail/maintainable": "~2.0",
+        "zareismail/maintainable": "~0.2",
         "zareismail/nova-location": "~0.1",
         "zareismail/nova-cascade": "~0.2",
         "superlatif/nova-tag-input": "^1.4",
