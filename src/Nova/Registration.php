@@ -24,6 +24,12 @@ class Registration extends BiosResource
                     ->required()
                     ->rules('required')
                     ->displayUsingLabels(),
+
+                Select::make(__('Landlord Role'), static::prefix('landlord_role'))
+                    ->options($roles)
+                    ->required()
+                    ->rules('required')
+                    ->displayUsingLabels(),
             ];
         });
     }  
