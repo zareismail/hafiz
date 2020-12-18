@@ -3,8 +3,9 @@
 namespace Zareismail\Hafiz\Nova; 
 
 use Illuminate\Http\Request; 
-use Laravel\Nova\Fields\{ID, Text, Number, Trix, BelongsTo, HasMany};
+use Laravel\Nova\Fields\{ID, Text, Number, Trix, HasMany};
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary; 
+use Zareismail\Fields\BelongsTo;
 
 class CommonArea extends Resource
 {  
