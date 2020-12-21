@@ -9,6 +9,7 @@
     "require": {
         "php": ">=7.1.0",
         "armincms/many-to-many": "~0.1",
+        "zareismail/nova-resource-manager": "~0.1",
         "zareismail/nova-contracts": "~0.1",
         "zareismail/quick-theme": "dev-master",
         "zareismail/nova-profile": "dev-master",
