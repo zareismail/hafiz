@@ -23,11 +23,7 @@ class Profile extends User
      */
     public function fields(Request $request)
     {
-        return [
-            Avatar::make(__('Image'), 'profile->image')
-                ->rounded()
-                ->hideFromDetail(boolval($request->get('card') == 'profile')),
-
+        return [ 
             Text::make(__('Username'), 'name'),
 
             Text::make(__('Firstname'), 'profile->firstname'),
@@ -37,6 +33,20 @@ class Profile extends User
             Text::make(__('Mobile'), 'mobile'),
 
             Number::make(__('Age'), 'profile->age'),
+
+            Avatar::make(__('Image'), 'profile->image')
+                ->rounded()
+                ->hideFromDetail(boolval($request->get('card') == 'profile')),
         ];
+    }
+
+    /**
+     * Determine if the given resource is authorizable.
+     *
+     * @return bool
+     */
+    public static function authorizable()
+    {
+        return false;
     }
 }
