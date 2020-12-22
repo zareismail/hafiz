@@ -184,6 +184,19 @@ class Apartment extends Resource
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
+    public function authorizedToView(Request $request)
+    {
+        return parent::authorizedToView($request) || $this->inContract($request);
+    }
+
+    /**
+     * Determine if the current user can view the given resource or throw an exception.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function inContract(Request $request)
     {
         return collect($this->contracts)->filter(function($contract) use ($request) {
