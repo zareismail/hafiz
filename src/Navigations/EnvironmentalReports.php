@@ -3,6 +3,7 @@
 namespace Zareismail\Hafiz\Navigations; 
  
 use Zareismail\QuickTheme\Navigation;
+use Zareismail\Shaghool\Nova\ConsumptionReport;
 
 class EnvironmentalReports extends Navigation 
 {     
@@ -34,7 +35,7 @@ class EnvironmentalReports extends Navigation
     public static function params(): array
     {
         return [
-            'resourceName' => 'shaghool-per-capitas',
+            'resourceName' => ConsumptionReport::uriKey(), 
         ];
-    }
+    } 
 }
