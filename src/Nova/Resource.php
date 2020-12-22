@@ -47,7 +47,7 @@ abstract class Resource extends BaseResource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query;
+        return parent::indexQuery($request, $query);
     }
 
     /**
