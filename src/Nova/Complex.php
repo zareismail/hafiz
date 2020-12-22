@@ -4,11 +4,12 @@ namespace Zareismail\Hafiz\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Panel;
-use Laravel\Nova\Fields\{ID, Text, Slug, Trix, BelongsTo, HasMany, MorphMany, HasManyThrough};
+use Laravel\Nova\Fields\{ID, Text, Slug, Trix, HasMany, MorphMany, HasManyThrough};
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
 use Zareismail\NovaLocation\Nova\Zone;
 use Zareismail\Details\Nova\Detail;
 use Zareismail\Costable\Nova\Cost;
+use Zareismail\Fields\BelongsTo;
 
 class Complex extends Resource
 {  
@@ -31,9 +32,9 @@ class Complex extends Resource
     		ID::make(),
 
             BelongsTo::make(__('Zone'), 'zone', Zone::class)
-                ->showCreateRelationButton()
-                ->withoutTrashed()
-                ->searchable(), 
+                // ->showCreateRelationButton()
+                // ->searchable()
+                ->withoutTrashed(), 
 
             Text::make(__('Name'), 'name')
                 ->required()
