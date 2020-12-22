@@ -34,7 +34,7 @@ class PreviousTenancy extends Navigation
     public static function params(): array
     {
         return [
-            'resourceName' => 'apartments'
+            'resourceName' => 'contracts'
         ];
     }
 }
