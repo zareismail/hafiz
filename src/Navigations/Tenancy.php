@@ -23,7 +23,7 @@ class Tenancy extends PreviousTenancy
     public static function params(): array
     {
         return array_merge(parent::params(), [
-            'resourceId' => 1
+            'resourceId' => optional(request()->user()->loadMissing('contracts')->contracts->pop())->id
         ]);
     }
 }
