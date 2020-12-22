@@ -3,11 +3,13 @@
 namespace Zareismail\Hafiz\Nova; 
 
 use Illuminate\Http\Request; 
+use Laravel\Nova\Http\Requests\NovaRequest; 
 use Laravel\Nova\Fields\{ID, Number, Trix, BelongsTo, HasMany, MorphMany, HasManyThrough, DateTime};
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
 use Zareismail\NovaContracts\Nova\User;
 use Zareismail\Fields\{BelongsTo as CascadeBelongsTo, MorphTo as CascadeMorphTo};
 use Zareismail\Costable\Nova\Cost;
+use Zareismail\Hafiz\Helper;
 
 class Apartment extends Resource
 {  
@@ -39,7 +41,7 @@ class Apartment extends Resource
      *
      * @var array
      */
-    public static $with = ['details', 'building'];
+    public static $with = ['details', 'building', 'contracts'];
 
     /**
      * Get the fields displayed by the resource.
@@ -129,4 +131,63 @@ class Apartment extends Resource
     { 
         return forward_static_call([new Building($this->building), 'title']).': '.$this->number;
     }
+
+    /**
+     * Build an "index" query for the given resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if(Helper::isTenant($request->user())) {
+            return $query->tap(function($query) {
+                $query->whereHas('contracts', function($query) {
+                    $query->authenticate();
+                });
+            });
+        }
+
+        return parent::indexQuery($request, $query); 
+    }
+
+    /**
+     * Determine if the resource should be available for the given request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    public function authorizeToViewAny(Request $request)
+    {
+        return $this->inContract($request) || parent::authorizedToView($request);
+    } 
+
+    /**
+     * Determine if the current user can view the given resource or throw an exception.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function authorizeToView(Request $request)
+    {
+        return $this->inContract($request) || parent::authorizeToView($request);
+    } 
+
+    /**
+     * Determine if the current user can view the given resource or throw an exception.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function inContract(Request $request)
+    {
+        return collect($this->contracts)->filter(function($contract) use ($request) {
+            return $contract->auth_id === $request->user()->id;
+        })->isNotEmpty();
+    } 
 }
