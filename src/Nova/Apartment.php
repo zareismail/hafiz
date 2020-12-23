@@ -111,7 +111,7 @@ class Apartment extends Resource
                     $query->authenticate();
                 }),
 
-            MorphMany::make(__('Costs'), 'costs', Cost::class), 
+            // MorphMany::make(__('Costs'), 'costs', Cost::class), 
     	];
     }
 
