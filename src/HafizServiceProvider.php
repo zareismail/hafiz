@@ -96,7 +96,7 @@ class HafizServiceProvider extends ServiceProvider
                 Navigations\EnvironmentalReports::class,
             ])
             ->canSee(function($request) { 
-                return Helper::isTenant($request->user());
+                return ! $request->expectsJson() && Helper::isTenant($request->user());
             }),
         ]);
     } 
