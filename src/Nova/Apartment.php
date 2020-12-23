@@ -41,7 +41,7 @@ class Apartment extends Resource
      *
      * @var array
      */
-    public static $with = ['details', 'building', 'contracts', 'percapitas.resource.unit'];
+    public static $with = ['costs', 'details', 'building', 'contracts', 'percapitas.resource.unit'];
 
     /**
      * Get the fields displayed by the resource.
@@ -96,10 +96,10 @@ class Apartment extends Resource
     			->help(__('Write about your apartment and their features.'))
     			->withFiles('public'), 
 
-            $this->when($request->isResourceDetailRequest(), function() {
+            $this->when($request->isResourceDetailRequest() && $this->percapitas->isNotEmpty(), function() {
                 return new Fields\PerCapitas($this->percapitas);
             }),
-            
+
             new Fields\Costs($this), 
 
             new Fields\Details($this),  

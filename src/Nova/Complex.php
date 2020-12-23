@@ -21,6 +21,13 @@ class Complex extends Resource
     public static $model = \Zareismail\Hafiz\Models\HafizComplex::class;
 
     /**
+     * The relationships that should be eager loaded when performing an index query.
+     *
+     * @var array
+     */
+    public static $with = ['details', 'costs', 'percapitas.resource.unit'];
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -47,7 +54,11 @@ class Complex extends Resource
 
     		Trix::make(__('Description'), 'description') 
     			->help(__('Write about your complex and their features.'))
-    			->withFiles('public'), 
+    			->withFiles('public'),  
+
+            $this->when($request->isResourceDetailRequest() && $this->percapitas->isNotEmpty(), function() {
+                return new Fields\PerCapitas($this->percapitas);
+            }),
 
             new Fields\Costs($this), 
 
@@ -65,7 +76,7 @@ class Complex extends Resource
 
             // HasManyThrough::make(__('Apartments'), 'apartments', Apartment::class),
 
-            MorphMany::make(__('Costs'), 'costs', Cost::class), 
+            // MorphMany::make(__('Costs'), 'costs', Cost::class), 
     	];
     }
 }

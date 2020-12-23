@@ -37,7 +37,7 @@ class CommonArea extends Resource
      *
      * @var array
      */
-    public static $with = ['details', 'building'];
+    public static $with = ['details', 'costs', 'building', 'percapitas.resource.unit'];
 
     /**
      * Get the fields displayed by the resource.
@@ -67,6 +67,10 @@ class CommonArea extends Resource
 
     		Trix::make(__('What is its use?'), 'explanation') 
     			->help(__('Write about this area and its uses.')), 
+
+            $this->when($request->isResourceDetailRequest() && $this->percapitas->isNotEmpty(), function() {
+                return new Fields\PerCapitas($this->percapitas);
+            }),
 
             new Fields\Costs($this), 
 
