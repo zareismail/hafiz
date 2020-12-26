@@ -42,6 +42,6 @@ class HafizCommonArea extends Model implements Cascade
      */
     public function subscribers()
     { 
-        return $this->contracts()->inProgress()->with('auth')->get()->flatMap->auth;
+        return $this->contracts()->inProgress()->with('auth')->get()->map->auth;
     }
 }

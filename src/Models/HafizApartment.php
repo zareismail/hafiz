@@ -100,6 +100,6 @@ class HafizApartment extends AuthorizableModel implements Cascade
      */
     public function subscribers()
     { 
-        return $this->contracts()->inProgress()->with('auth')->get()->flatMap->auth->push($this->auth);
+        return $this->contracts()->inProgress()->with('auth')->get()->map->auth->push($this->auth);
     }
 }
