@@ -2,11 +2,27 @@
 
 namespace Zareismail\Hafiz\Nova; 
 
+use Illuminate\Http\Request; 
 use Laravel\Nova\Http\Requests\NovaRequest; 
+use Laravel\Nova\Fields\HasMany; 
+use Zareismail\Chapar\Nova\Letter;
 use Zareismail\Hafiz\Helper;
 
 class Landlord extends User
-{         
+{          
+    /**
+     * Get the fields displayed by the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function fields(Request $request)
+    {
+        return array_merge(parent::fields($request), [
+            HasMany::make(__('Letters'), 'letters', Letter::class),
+        ]);
+    }
+
     /**
      * Return the location to redirect the user after update.
      *
@@ -62,4 +78,27 @@ class Landlord extends User
     { 
         return parent::relatableQuery($request, $query);
     } 
+
+    /**
+     * Determine if the resource should be available for the given request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    public function authorizeToViewAny(Request $request)
+    {
+        return true;
+    }
+
+
+    /**
+     * Determine if the resource should be available for the given request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    public static function authorizedToViewAny(Request $request)
+    {
+        return true;
+    }
 }

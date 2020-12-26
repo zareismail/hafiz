@@ -19,5 +19,15 @@ class User extends Resource
      *
      * @var string
      */
-    public static $group = 'Users';   
+    public static $group = 'Users';    
+
+    /**
+     * Get the URI key for the resource.
+     *
+     * @return string
+     */
+    public static function uriKey()
+    {
+        return 'hafiz-'.parent::uriKey();
+    }
 }
