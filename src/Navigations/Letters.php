@@ -3,6 +3,7 @@
 namespace Zareismail\Hafiz\Navigations; 
  
 use Zareismail\QuickTheme\Navigation;
+use Zareismail\Chapar\Nova\Letter;
 
 class Letters extends Navigation 
 {     
@@ -34,7 +35,7 @@ class Letters extends Navigation
     public static function params(): array
     {
         return [
-            'resourceName' => 'letters',
+            'resourceName' => Letter::uriKey(),
         ];
     }
 }
