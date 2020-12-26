@@ -20,9 +20,10 @@ use Zareismail\Shaghool\Contracts\Measurable;
 use Zareismail\Shaghool\Concerns\InteractsWithPerCapita;
 use Zareismail\Chapar\Contracts\Recipient;
 use Zareismail\Maintainable\Contracts\Maintainable;
+use Zareismail\Hafiz\Contracts\Subscribable;
 
 
-class Model extends LaravelModel implements MoreDetails, HasMedia, Costable, Measurable, Contractable, Recipient, Maintainable
+class Model extends LaravelModel implements MoreDetails, HasMedia, Costable, Measurable, Contractable, Recipient, Maintainable, Subscribable
 {
     use HasFactory, SoftDeletes, InteractsWithDetails, HasMediaTrait, InteractsWithCosts;
     use Locatable, InteractsWithConfigs, InteractsWithContracts, InteractsWithPerCapita; 
@@ -138,4 +139,13 @@ class Model extends LaravelModel implements MoreDetails, HasMedia, Costable, Mea
 	                ->height(720);
 	        });
 	}
+
+	/**
+	 * Get the subscribed users.
+	 *  
+	 * @return Null|\Illuminate\Database\Eloquent\Collection
+	 */
+	public function subscribers()
+	{ 
+	} 
 }

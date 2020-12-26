@@ -44,4 +44,19 @@ class HafizBuilding extends Model implements Cascade
 	{
 		return $this->complex();
 	}
+
+	/**
+	 * Get the subscribed users.
+	 *  
+	 * @return Null|\Illuminate\Database\Eloquent\Collection
+	 */
+	public function subscribers()
+	{ 
+		$apartments = $this->apartments->flatMap->subscribers();
+		$areas = $this->areas->flatMap->subscribers();
+
+		return $areas->merge($apartments)->unique(function($user) {
+			return $user->getKey();
+		});
+	}
 }

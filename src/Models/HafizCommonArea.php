@@ -34,4 +34,14 @@ class HafizCommonArea extends Model implements Cascade
 	{
 		return $this->building();
 	}
+
+    /**
+     * Get the subscribed users.
+     *  
+     * @return Null|\Illuminate\Database\Eloquent\Collection
+     */
+    public function subscribers()
+    { 
+        return $this->contracts()->inProgress()->with('auth')->get()->flatMap->auth;
+    }
 }

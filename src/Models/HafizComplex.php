@@ -26,4 +26,16 @@ class HafizComplex extends Model
 			HafizApartment::class, HafizBuilding::class, 'complex_id', 'building_id' 
 		);
 	} 
+
+	/**
+	 * Get the subscribed users.
+	 *  
+	 * @return Null|\Illuminate\Database\Eloquent\Collection
+	 */
+	public function subscribers()
+	{ 
+		return $this->buildings->flatMap->subscribers()->unique(function($user) {
+			return $user->getKey();
+		}); 
+	}
 }
