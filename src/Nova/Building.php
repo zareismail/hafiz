@@ -4,11 +4,12 @@ namespace Zareismail\Hafiz\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Panel;
-use Laravel\Nova\Fields\{ID, Text, Slug, Number, Trix, HasMany, MorphMany};
+use Laravel\Nova\Fields\{ID, Text, Slug, Number, Trix, BelongsTo, HasMany, MorphMany};
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
+use Zareismail\Fields\BelongsTo as CascadeTo;
+use Zareismail\NovaContracts\Nova\User;
 use Zareismail\NovaLocation\Nova\Zone;
-use Zareismail\Costable\Nova\Cost;
-use Zareismail\Fields\BelongsTo;
+use Zareismail\Costable\Nova\Cost; 
 
 class Building extends Resource
 {  
@@ -37,13 +38,21 @@ class Building extends Resource
     	return [
     		ID::make(), 
 
-            BelongsTo::make(__('Complex'), 'complex', Complex::class)
+            BelongsTo::make(__('User'), 'auth', User::class)
+                ->withoutTrashed()
+                ->default($request->user()->getKey())
+                ->searchable()
+                ->canSee(function($request) {
+                    return $request->user()->can('addUser', static::newModel());
+                }), 
+
+            CascadeTo::make(__('Complex'), 'complex', Complex::class)
                 // ->showCreateRelationButton()
                 ->withoutTrashed()
                 ->searchable()
                 ->nullable(),
 
-            BelongsTo::make(__('Zone'), 'zone', Zone::class)
+            CascadeTo::make(__('Zone'), 'zone', Zone::class)
                 // ->showCreateRelationButton()
                 ->withoutTrashed()
                 // ->searchable()

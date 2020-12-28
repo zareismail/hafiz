@@ -3,9 +3,10 @@
 namespace Zareismail\Hafiz\Nova; 
 
 use Illuminate\Http\Request; 
-use Laravel\Nova\Fields\{ID, Text, Number, Trix, HasMany};
+use Laravel\Nova\Fields\{ID, Text, Number, Trix, BelongsTo, HasMany};
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary; 
-use Zareismail\Fields\BelongsTo;
+use Zareismail\Fields\BelongsTo as CascadeTo;
+use Zareismail\NovaContracts\Nova\User;
 
 class CommonArea extends Resource
 {  
@@ -50,7 +51,15 @@ class CommonArea extends Resource
     	return [
     		ID::make(),   
 
-            BelongsTo::make(__('Building'), 'building', Building::class)
+            BelongsTo::make(__('User'), 'auth', User::class)
+                ->withoutTrashed()
+                ->default($request->user()->getKey())
+                ->searchable()
+                ->canSee(function($request) {
+                    return $request->user()->can('addUser', static::newModel());
+                }), 
+
+            CascadeTo::make(__('Building'), 'building', Building::class)
                 ->withoutTrashed()
                 ->searchable(), 
 

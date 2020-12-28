@@ -7,8 +7,8 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\{ID, Heading, Number, Trix, BelongsTo, HasMany, MorphMany};
 use Superlatif\NovaTagInput\Tags;
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
-use Zareismail\NovaContracts\Nova\User;
 use Zareismail\Fields\{BelongsTo as CascadeBelongsTo, MorphTo as CascadeMorphTo};
+use Zareismail\NovaContracts\Nova\User;
 use Zareismail\Costable\Nova\Cost;
 use Zareismail\Hafiz\Helper;
 
@@ -64,7 +64,7 @@ class Apartment extends Resource
                 ->default($request->user()->getKey())
                 ->searchable()
                 ->canSee(function($request) {
-                    return $request->user()->can('update', Building::newModel());
+                    return $request->user()->can('addUser', static::newModel());
                 }),  
 
             CascadeBelongsTo::make(__('Building'), 'building', Building::class)
