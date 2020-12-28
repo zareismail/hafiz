@@ -59,7 +59,7 @@ class Complex extends Resource
 
     		Slug::make(__('Slug'), 'slug')
     			->from('name') 
-    			->help(__('This is part of the URL. If you don\'t info about it, leave it blank.')), 
+    			->help(__('This is part of the URL. If you don\'t have info about it, leave it blank.')), 
 
     		Trix::make(__('Description'), 'description') 
     			->help(__('Write about your complex and their features.'))
