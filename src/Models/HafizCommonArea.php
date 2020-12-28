@@ -33,8 +33,8 @@ class HafizCommonArea extends Model implements Cascade
 	public function parent()
 	{
 		return $this->building();
-	}
-
+	} 
+	
     /**
      * Get the subscribed users.
      *  
@@ -42,6 +42,6 @@ class HafizCommonArea extends Model implements Cascade
      */
     public function subscribers()
     { 
-        return $this->contracts()->inProgress()->with('auth')->get()->map->auth;
+        return $this->contracts()->inProgress()->with('auth')->get()->map->auth->push($this->auth);
     }
 }

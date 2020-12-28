@@ -78,19 +78,5 @@ class Complex extends Resource
 
             // MorphMany::make(__('Costs'), 'costs', Cost::class), 
     	];
-    }
-
-    /**
-     * Get the actions available on the entity.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    public function actions(Request $request)
-    {
-        return [
-            Actions\SendNotification::make()
-                ->showOnTableRow(), 
-        ];
-    }
+    } 
 }

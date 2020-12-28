@@ -83,19 +83,5 @@ class CommonArea extends Resource
                     $query->authenticate();
                 }), 
     	];
-    }
-
-    /**
-     * Get the actions available on the entity.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    public function actions(Request $request)
-    {
-        return [
-            Actions\SendNotification::make()
-                ->showOnTableRow(), 
-        ];
-    }
+    } 
 }

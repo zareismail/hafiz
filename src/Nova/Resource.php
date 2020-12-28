@@ -2,6 +2,7 @@
 
 namespace Zareismail\Hafiz\Nova;
 
+use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Zareismail\NovaContracts\Nova\Resource as BaseResource;
 use Zareismail\NovaPolicy\Helper;
@@ -87,4 +88,21 @@ abstract class Resource extends BaseResource
     {  
         return static::authenticateQuery($request, parent::relatableQuery($request, $query));
     } 
+
+    /**
+     * Get the actions available on the entity.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function actions(Request $request)
+    {
+        return [
+            Actions\SendNotification::make()
+                ->showOnTableRow()
+                ->canSee(function($request) {
+                    return $request->user()->can('sendNotificatino', $this->resource);
+                }), 
+        ];
+    }
 }

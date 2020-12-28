@@ -91,4 +91,16 @@ class Policy
     {
         return $user->isDeveloper();
     } 
+
+    /**
+     * Determine whether the user can permanently send notification to the resource.
+     *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable $user
+     * @param  \Illuminate\Database\Eloquent\Model  $resource
+     * @return mixed
+     */
+    public function sendNotification(Authenticatable $user, Model $resource)
+    {
+        return $user->isDeveloper();
+    } 
 }
