@@ -12,12 +12,10 @@ class HafizServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $policies = [
-        Models\HafizAccount::class => Policies\Account::class,
+    protected $policies = [ 
         Models\HafizComplex::class => Policies\Complex::class,
         Models\HafizBuilding::class => Policies\Building::class,
-        Models\HafizApartment::class => Policies\Apartment::class,
-        Models\HafizInsurance::class => Policies\Insurance::class,
+        Models\HafizApartment::class => Policies\Apartment::class, 
         Models\HafizCommonArea::class => Policies\CommonArea::class, 
     ];
 
@@ -52,52 +50,13 @@ class HafizServiceProvider extends ServiceProvider
      */
     public function servingNova()
     {
-        LaravelNova::resources([
-            Nova\Account::class,
-            Nova\Insurance::class,
-
-            Nova\Profile::class,
-            Nova\Tenant::class,
-            Nova\Landlord::class,
-
-            Nova\Registration::class,
-            Nova\Places::class,
-            
+        LaravelNova::resources([ 
             Nova\Complex::class,
             Nova\Building::class,
             Nova\Apartment::class,
             Nova\CommonArea::class, 
-        ]); 
-
-        LaravelNova::tools([
-            \Zareismail\QuickTheme\QuickTheme::cards([
-                tap(\Zareismail\Cards\Profile::make(), function($profile) {
-                    $profile->resourceUsing(Nova\Profile::class)->avatarUsing(function($user) {
-                        if($path = data_get($user, 'profile.image')) {
-                            return \Storage::disk('public')->url($path);
-                        } 
-                    });
-                }),
-            ])
-            ->navigations([
-                Navigations\Tenancy::class,
-                Navigations\PreviousTenancy::class,
-                Navigations\Maturity::class,
-                Navigations\Payments::class,
-                // Navigations\CurrentContract::class,
-                // Navigations\ListContracts::class,
-                Navigations\Apartment::class,
-                Navigations\PreviousApartments::class,
-                Navigations\ReportProblem::class,
-                Navigations\Issues::class,
-                Navigations\SendToOwner::class,
-                Navigations\Letters::class,
-                Navigations\ReportEnvironmental::class,
-                Navigations\EnvironmentalReports::class,
-            ])
-            ->canSee(function($request) { 
-                return ! $request->expectsJson() && Helper::isTenant($request->user());
-            }),
-        ]);
+            Nova\Registration::class,
+            Nova\Places::class, 
+        ]);  
     } 
 }
