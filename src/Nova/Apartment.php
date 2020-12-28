@@ -4,7 +4,8 @@ namespace Zareismail\Hafiz\Nova;
 
 use Illuminate\Http\Request; 
 use Laravel\Nova\Http\Requests\NovaRequest; 
-use Laravel\Nova\Fields\{ID, Heading, Number, Trix, BelongsTo, HasMany, MorphMany, HasManyThrough, DateTime};
+use Laravel\Nova\Fields\{ID, Heading, Number, Trix, BelongsTo, HasMany, MorphMany};
+use Superlatif\NovaTagInput\Tags;
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
 use Zareismail\NovaContracts\Nova\User;
 use Zareismail\Fields\{BelongsTo as CascadeBelongsTo, MorphTo as CascadeMorphTo};
@@ -91,6 +92,12 @@ class Apartment extends Resource
     			->help(__('What is the number of your apartment?'))
                 ->min(0)
                 ->default(0),
+
+            Tags::make(__('Inventory List'), 'config->inventory')
+                ->help(__('Write inventory name and press the ENTER ...'))
+                ->placeholder(__('Write inventory name and press the ENTER ...'))
+                ->allowEditTags()
+                ->hideFromIndex(),
 
     		Trix::make(__('Description'), 'description') 
     			->help(__('Write about your apartment and their features.'))
