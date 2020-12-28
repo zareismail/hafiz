@@ -3,8 +3,6 @@
 namespace Zareismail\Hafiz\Models;
 
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\{Model as LaravelModel, SoftDeletes};
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Zareismail\Contracts\Concerns\InteractsWithConfigs;
@@ -23,9 +21,9 @@ use Zareismail\Maintainable\Contracts\Maintainable;
 use Zareismail\Hafiz\Contracts\Subscribable;
 
 
-class Model extends LaravelModel implements MoreDetails, HasMedia, Costable, Measurable, Contractable, Recipient, Maintainable, Subscribable
+class Model extends AuthorizableModel implements MoreDetails, HasMedia, Costable, Measurable, Contractable, Recipient, Maintainable, Subscribable
 {
-    use HasFactory, SoftDeletes, InteractsWithDetails, HasMediaTrait, InteractsWithCosts;
+    use InteractsWithDetails, HasMediaTrait, InteractsWithCosts;
     use Locatable, InteractsWithConfigs, InteractsWithContracts, InteractsWithPerCapita; 
 
     /**

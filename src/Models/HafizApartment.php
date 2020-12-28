@@ -5,7 +5,7 @@ namespace Zareismail\Hafiz\Models;
 use Znck\Eloquent\Traits\BelongsToThrough;
 use Zareismail\Fields\Contracts\Cascade;
 
-class HafizApartment extends AuthorizableModel implements Cascade
+class HafizApartment extends Model implements Cascade
 {   
 	use BelongsToThrough;
 
