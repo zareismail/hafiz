@@ -103,4 +103,16 @@ class Policy
     {
         return $user->isDeveloper();
     } 
+
+    /**
+     * Determine whether the user can permanently add the resource owner.
+     *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable $user
+     * @param  \Illuminate\Database\Eloquent\Model  $resource
+     * @return mixed
+     */
+    public function addUser(Authenticatable $user, Model $resource)
+    {
+        return $user->isDeveloper();
+    } 
 }
