@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Coroowicaksono\ChartJsIntegration\LineChart;
 use Zareismail\NovaContracts\Nova\Resource as BaseResource;
+use Zareismail\Shaghool\Nova\MeasurableResource;
 use Zareismail\Shaghool\Models\ShaghoolReport;
 use Zareismail\NovaPolicy\Helper;
 
@@ -118,7 +119,7 @@ abstract class Resource extends BaseResource
     {  
         return $this->reportQuery($request)
                     ->with('percapita.resource')
-                    ->whereDate('created_at', '>=', now()->subMonths(12))
+                    ->whereDate('target_date', '>=', now()->subMonths(12))
                     ->get()
                     ->groupBy('percapita_id')
                     ->map(function($reports) {
@@ -140,8 +141,10 @@ abstract class Resource extends BaseResource
             return $report->created_at->format('M y');
         }); 
 
+        $measurable = new MeasurableResource($reports->pluck('percapita.resource')->filter()->first());
+
         return (new LineChart) 
-            ->title(data_get($reports->pluck('percapita.resource')->first(), 'name')) 
+            ->title($measurable->title()) 
             ->animations([
                 'enabled' => true,
                 'easing' => 'easeinout',
