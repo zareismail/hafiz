@@ -117,7 +117,7 @@ abstract class Resource extends BaseResource
      */
     public function cards(Request $request)
     {  
-        return $this->reportQuery($request)
+        return static::authenticateQuery($request, $this->reportQuery($request))
                     ->with('percapita.resource')
                     ->whereDate('target_date', '>=', now()->subMonths(12))
                     ->get()
