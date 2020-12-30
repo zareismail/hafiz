@@ -138,10 +138,12 @@ abstract class Resource extends BaseResource
     public function newLineChart($reports)
     { 
         $series = $reports->groupBy(function($report) {
-            return $report->created_at->format('M y');
+            return $report->target_date->format('M y');
         }); 
 
-        $measurable = new MeasurableResource($reports->pluck('percapita.resource')->filter()->first());
+        $measurable = new MeasurableResource(
+            $reports->pluck('percapita.resource')->filter()->first()
+        );
 
         return (new LineChart) 
             ->title($measurable->title()) 
@@ -153,12 +155,30 @@ abstract class Resource extends BaseResource
                 'barPercentage' => 0.5,
                 'label' => __('Consumption'),
                 'borderColor' => '#f7a35c',
-                'data' => $series->map->sum('value')->values()->all(),
+                'data' => $consumption = $series->map->sum('value')->values()->all(),
+            ],[
+                'barPercentage' => 0.5,
+                'label' => __('Total Consumption'),
+                'borderColor' => '#e53e3e',
+                'data' => collect($consumption)->map(function($value, $key) use ($consumption) {
+                    return collect($consumption)->slice(0, $key)->reduce(function($carry, $item) {
+                        return $item + $carry;
+                    }, $value);
+                })->values()->all(),
             ],[
                 'barPercentage' => 0.5,
                 'label' => __('Balance'),
                 'borderColor' => '#90ed7d',
-                'data' => $series->map->sum('balance')->values()->all(),
+                'data' => $balance = $series->map->sum('balance')->values()->all(),
+            ],[
+                'barPercentage' => 0.5,
+                'label' => __('Total Balance'),
+                'borderColor' => '#38a169',
+                'data' => collect($balance)->map(function($value, $key) use ($balance) {
+                    return collect($balance)->slice(0, $key)->reduce(function($carry, $item) {
+                        return $item + $carry;
+                    }, $value);
+                })->values()->all(),
             ]))
             ->options([
                 'xaxis' => [
