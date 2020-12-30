@@ -154,12 +154,17 @@ abstract class Resource extends BaseResource
             ->series(array([
                 'barPercentage' => 0.5,
                 'label' => __('Consumption'),
-                'borderColor' => '#f7a35c',
+                'borderColor' => '#e53e3e',
                 'data' => $consumption = $series->map->sum('value')->values()->all(),
             ],[
                 'barPercentage' => 0.5,
-                'label' => __('Total Consumption'),
-                'borderColor' => '#e53e3e',
+                'label' => __('Balance'),
+                'borderColor' => '#38a169',
+                'data' => $balance = $series->map->sum('balance')->values()->all(),
+            ],[
+                'barPercentage' => 0.5,
+                'label' => __('Consumption Aggregation'),
+                'borderColor' => '#fed7d7',
                 'data' => collect($consumption)->map(function($value, $key) use ($consumption) {
                     return collect($consumption)->slice(0, $key)->reduce(function($carry, $item) {
                         return $item + $carry;
@@ -167,13 +172,8 @@ abstract class Resource extends BaseResource
                 })->values()->all(),
             ],[
                 'barPercentage' => 0.5,
-                'label' => __('Balance'),
-                'borderColor' => '#90ed7d',
-                'data' => $balance = $series->map->sum('balance')->values()->all(),
-            ],[
-                'barPercentage' => 0.5,
-                'label' => __('Total Balance'),
-                'borderColor' => '#38a169',
+                'label' => __('Balance Aggregation'),
+                'borderColor' => '#c6f6d5',
                 'data' => collect($balance)->map(function($value, $key) use ($balance) {
                     return collect($balance)->slice(0, $key)->reduce(function($carry, $item) {
                         return $item + $carry;
