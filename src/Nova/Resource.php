@@ -4,7 +4,9 @@ namespace Zareismail\Hafiz\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Coroowicaksono\ChartJsIntegration\LineChart;
 use Zareismail\NovaContracts\Nova\Resource as BaseResource;
+use Zareismail\Shaghool\Models\ShaghoolReport;
 use Zareismail\NovaPolicy\Helper;
 
 abstract class Resource extends BaseResource
@@ -104,5 +106,82 @@ abstract class Resource extends BaseResource
                     return $request->user()->can('sendNotificatino', $this->resource);
                 }), 
         ];
+    }
+
+    /**
+     * Get the cards available on the entity.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function cards(Request $request)
+    {  
+        return $this->reportQuery($request)
+                    ->with('percapita.resource')
+                    ->whereDate('created_at', '>=', now()->subMonths(12))
+                    ->get()
+                    ->groupBy('percapita_id')
+                    ->map(function($reports) {
+                        return $this->newLineChart($reports);
+                    })
+                    ->values()
+                    ->all();  
+    }
+
+    /**
+     * Make a LinceChart for the given reports.
+     * 
+     * @param  \Illuminate\Database\Eloquent\Collection $reports 
+     * @return \Coroowicaksono\ChartJsIntegration\LineChart          
+     */
+    public function newLineChart($reports)
+    { 
+        $series = $reports->groupBy(function($report) {
+            return $report->created_at->format('M y');
+        }); 
+
+        return (new LineChart) 
+            ->title(data_get($reports->pluck('percapita.resource')->first(), 'name')) 
+            ->animations([
+                'enabled' => true,
+                'easing' => 'easeinout',
+            ])
+            ->series(array([
+                'barPercentage' => 0.5,
+                'label' => __('Consumption'),
+                'borderColor' => '#f7a35c',
+                'data' => $series->map->sum('value')->values()->all(),
+            ],[
+                'barPercentage' => 0.5,
+                'label' => __('Balance'),
+                'borderColor' => '#90ed7d',
+                'data' => $series->map->sum('balance')->values()->all(),
+            ]))
+            ->options([
+                'xaxis' => [
+                    'categories' => $series->keys()->all(),
+                ],
+            ])
+            ->width('1/2')
+            ->withMeta([ 
+                'onlyOnDetail' => request()->filled('resourceId'),
+            ]); 
+    }
+
+    /**
+     * Build report query for the given request.
+     * 
+     * @param  \Illuminate\Http\Request $request 
+     * @return \Illuminate\Database\Eloquent\Builder           
+     */
+    public function reportQuery(Request $request)
+    {
+        return ShaghoolReport::whereHas('percapita', function($query)  {
+            $query->whereHasMorph('measurable', [static::$model], function($query) {
+               $query->when(request()->filled('resourceId'), function($query) {
+                    $query->whereKey(request()->input('resourceId'));
+               });
+            });
+        });
     }
 }
