@@ -81,7 +81,7 @@ class Building extends Resource
                 return new Fields\PerCapitas($this->percapitas);
             }),
 
-            new Fields\Costs($this), 
+            // new Fields\Costs($this), 
 
             new Fields\Details($this),
 
