@@ -17,7 +17,7 @@
         "zareismail/complex": "~0.1",
         "zareismail/details": "~0.1",
         "zareismail/costable": "1.*",
-        "zareismail/bonchaq": "~0.1",
+        "zareismail/bonchaq": "1.*",
         "zareismail/chapar": "1.*",
         "zareismail/maintainable": "~0.2",
         "zareismail/nova-location": "~0.1",
