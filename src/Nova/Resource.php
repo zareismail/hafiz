@@ -122,8 +122,8 @@ abstract class Resource extends BaseResource
                     ->whereDate('target_date', '>=', now()->subMonths(12))
                     ->get()
                     ->groupBy('percapita_id')
-                    ->map(function($reports) {
-                        return $this->newLineChart($reports);
+                    ->flatMap(function($reports) {
+                        return $this->newLineCharts($reports);
                     })
                     ->values()
                     ->all();  
@@ -135,7 +135,7 @@ abstract class Resource extends BaseResource
      * @param  \Illuminate\Database\Eloquent\Collection $reports 
      * @return \Coroowicaksono\ChartJsIntegration\LineChart          
      */
-    public function newLineChart($reports)
+    public function newLineCharts($reports)
     { 
         $series = $reports->groupBy(function($report) {
             return $report->target_date->format('M y');
@@ -145,7 +145,8 @@ abstract class Resource extends BaseResource
             $reports->pluck('percapita.resource')->filter()->first()
         );
 
-        return (new LineChart) 
+        return [
+            (new LineChart) 
             ->title($measurable->title()) 
             ->animations([
                 'enabled' => true,
@@ -161,9 +162,24 @@ abstract class Resource extends BaseResource
                 'label' => __('Balance'),
                 'borderColor' => '#38a169',
                 'data' => $balance = $series->map->sum('balance')->values()->all(),
-            ],[
+            ]))
+            ->options([
+                'xaxis' => [
+                    'categories' => $series->keys()->all(),
+                ],
+            ])
+            ->width('1/2')
+            ->onlyOnDetail(),
+
+            (new LineChart) 
+            ->title($measurable->title().PHP_EOL.__('Aggregation')) 
+            ->animations([
+                'enabled' => true,
+                'easing' => 'easeinout',
+            ])
+            ->series(array([
                 'barPercentage' => 0.5,
-                'label' => __('Consumption Aggregation'),
+                'label' => __('Consumption'),
                 'borderColor' => '#fed7d7',
                 'data' => collect($consumption)->map(function($value, $key) use ($consumption) {
                     return collect($consumption)->slice(0, $key)->reduce(function($carry, $item) {
@@ -172,7 +188,7 @@ abstract class Resource extends BaseResource
                 })->values()->all(),
             ],[
                 'barPercentage' => 0.5,
-                'label' => __('Balance Aggregation'),
+                'label' => __('Balance'),
                 'borderColor' => '#c6f6d5',
                 'data' => collect($balance)->map(function($value, $key) use ($balance) {
                     return collect($balance)->slice(0, $key)->reduce(function($carry, $item) {
@@ -186,9 +202,8 @@ abstract class Resource extends BaseResource
                 ],
             ])
             ->width('1/2')
-            ->withMeta([ 
-                'onlyOnDetail' => request()->filled('resourceId'),
-            ]); 
+            ->onlyOnDetail(),
+        ]; 
     }
 
     /**
