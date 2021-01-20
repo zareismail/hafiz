@@ -5,7 +5,7 @@ namespace Zareismail\Hafiz\Nova\Fields;
 use Illuminate\Http\Resources\MergeValue;
 use Laravel\Nova\Resource; 
 use Laravel\Nova\Fields\{Text, Textarea}; 
-use GeneaLabs\NovaMapMarkerField\MapMarker;
+use Zareismail\NovaLocation\Nova\Fields\MapMarker;
 use NovaItemsField\Items;
 
 class ContactsDetails extends MergeValue
@@ -33,13 +33,7 @@ class ContactsDetails extends MergeValue
 	public function fields()
 	{
 		return [ 
-            MapMarker::make('Google Location', 'google_location')
-                ->defaultZoom(18)
-                ->latitude('latitude')
-                ->longitude('longitude')
-                ->defaultLatitude(41.823611)
-                ->defaultLongitude(-71.422222) 
-                ->centerCircle(50, 'red', 1, .5)
+            MapMarker::make('Google Location', 'google_location') 
                 ->hideFromIndex(),
 
             Textarea::make(__('Address'), 'config->address') 
@@ -49,7 +43,7 @@ class ContactsDetails extends MergeValue
                 ->required() 
                 ->rows(2), 
 
-            Text::make(__('Zipcode'), 'config->zipcode')
+            Text::make(__('Postal Code'), 'config->zipcode')
                 ->hideFromIndex(),
 
             Text::make(__('Fax'), 'config->fax')
