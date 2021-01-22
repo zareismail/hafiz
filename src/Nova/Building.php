@@ -47,16 +47,13 @@ class Building extends Resource
                     return $request->user()->can('addUser', static::newModel());
                 }), 
 
-            CascadeTo::make(__('Complex'), 'complex', Complex::class)
-                // ->showCreateRelationButton()
+            CascadeTo::make(__('Complex'), 'complex', Complex::class) 
                 ->withoutTrashed()
                 ->searchable()
                 ->nullable(),
 
-            CascadeTo::make(__('Zone'), 'zone', Zone::class)
-                // ->showCreateRelationButton()
-                ->withoutTrashed()
-                // ->searchable()
+            CascadeTo::make(__('Zone'), 'zone', Zone::class) 
+                ->withoutTrashed() 
                 ->nullable()
                 ->rules('required_without:complex'),
 

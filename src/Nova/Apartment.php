@@ -105,9 +105,7 @@ class Apartment extends Resource
 
             $this->when($request->isResourceDetailRequest() && $this->percapitas->isNotEmpty(), function() {
                 return new Fields\PerCapitas($this->percapitas);
-            }),
-
-            // new Fields\Costs($this), 
+            }), 
 
             new Fields\Details($this),  
 
@@ -116,9 +114,7 @@ class Apartment extends Resource
                 ->autouploading()
                 ->attachExisting(function ($query, $request, $model) {
                     $query->authenticate();
-                }),
-
-            // MorphMany::make(__('Costs'), 'costs', Cost::class), 
+                }), 
     	];
     }
 

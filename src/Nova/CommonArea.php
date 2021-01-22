@@ -79,9 +79,7 @@ class CommonArea extends Resource
 
             $this->when($request->isResourceDetailRequest() && $this->percapitas->isNotEmpty(), function() {
                 return new Fields\PerCapitas($this->percapitas);
-            }),
-
-            // new Fields\Costs($this), 
+            }), 
 
             new Fields\Details($this),  
 
