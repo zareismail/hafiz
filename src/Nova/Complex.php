@@ -3,6 +3,7 @@
 namespace Zareismail\Hafiz\Nova; 
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Laravel\Nova\Fields\{ID, Text, Slug, Trix, BelongsTo, HasMany, MorphMany, HasManyThrough};
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
@@ -47,9 +48,7 @@ class Complex extends Resource
                     return $request->user()->can('addUser', static::newModel());
                 }), 
 
-            CascadeTo::make(__('Zone'), 'zone', Zone::class)
-                // ->showCreateRelationButton()
-                // ->searchable()
+            CascadeTo::make(__('Zone'), 'zone', Zone::class) 
                 ->withoutTrashed(), 
 
             Text::make(__('Name'), 'name')
@@ -67,9 +66,7 @@ class Complex extends Resource
 
             $this->when($request->isResourceDetailRequest() && $this->percapitas->isNotEmpty(), function() {
                 return new Fields\PerCapitas($this->percapitas);
-            }),
-
-            // new Fields\Costs($this), 
+            }),  
 
             new Fields\Details($this),  
              
@@ -81,11 +78,30 @@ class Complex extends Resource
                 new Fields\ContactsDetails($this)
             ])),
 
-            HasMany::make(__('Buildings'), 'buildings', Building::class),
-
-            // HasManyThrough::make(__('Apartments'), 'apartments', Apartment::class),
-
-            // MorphMany::make(__('Costs'), 'costs', Cost::class), 
+            HasMany::make(__('Buildings'), 'buildings', Building::class), 
     	];
+    } 
+
+    /**
+     * Build a "relatable" query for the given resource.
+     *
+     * This query determines which instances of the model may be attached to other resources.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function relatableQuery(NovaRequest $request, $query)
+    {  
+        return parent::relatableQuery($request, $query) 
+                    ->orWhereHas('buildings.contracts', function($query) use ($request) {
+                        $query->authenticate();
+                    })
+                    ->orWhereHas('buildings.apartments.contracts', function($query) use ($request) {
+                        $query->authenticate();
+                    })
+                    ->orWhereHas('buildings.areas.contracts', function($query) use ($request) {
+                        $query->authenticate();
+                    });
     } 
 }

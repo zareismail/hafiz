@@ -89,7 +89,10 @@ abstract class Resource extends BaseResource
      */
     public static function relatableQuery(NovaRequest $request, $query)
     {  
-        return static::authenticateQuery($request, parent::relatableQuery($request, $query));
+        return static::authenticateQuery($request, parent::relatableQuery($request, $query))
+                    ->orWhereHas('contracts', function($query) use ($request) {
+                        $query->authenticate();
+                    });
     } 
 
     /**
