@@ -210,4 +210,54 @@ class Apartment extends Resource
             return $contract->auth_id === $request->user()->id;
         })->isNotEmpty();
     } 
+
+    /**
+     * Apply the search query to the query.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $search
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function applyContractSearch($query, $search)
+    { 
+        static::applyRelatedSearch($query, $search);
+    }
+
+    /**
+     * Apply the search query to the query.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $search
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function applyPerCapitaSearch($query, $search)
+    { 
+        static::applyRelatedSearch($query, $search);
+    }
+
+    /**
+     * Apply the search query to the query.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $search
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function applyCostSearch($query, $search)
+    { 
+        static::applyRelatedSearch($query, $search);
+    }
+
+    /**
+     * Apply the search query to the query.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $search
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function applyRelatedSearch($query, $search)
+    { 
+        $query->orWhereHas('building', function($query) use ($search) {
+            Building::applyRelatedSearch($query->where('name', 'like', '%'.$search.'%'), $search); 
+        });
+    }
 }
