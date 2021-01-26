@@ -258,6 +258,18 @@ class Apartment extends Resource
     { 
         $query->orWhereHas('building', function($query) use ($search) {
             Building::applyRelatedSearch($query->where('name', 'like', '%'.$search.'%'), $search); 
+        })->when(preg_match('/[0-9]+$/', $search), function($query) use ($search) {
+            $query->orWhere(function($query) use ($search) {
+                $parts = explode(' ', $search);
+
+                $query
+                    ->where('number', 'like', '%'.array_pop($parts).'%')
+                    ->whereHas('building', function($query) use ($parts) {
+                        $search = implode(' ', $parts);
+
+                        Building::applyRelatedSearch($query->where('name', 'like', '%'.$search.'%'), $search); 
+                    });
+            });              
         });
     }
 }
