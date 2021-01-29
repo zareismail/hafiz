@@ -90,8 +90,10 @@ abstract class Resource extends BaseResource
     public static function relatableQuery(NovaRequest $request, $query)
     {  
         return static::authenticateQuery($request, parent::relatableQuery($request, $query))
-                    ->orWhereHas('contracts', function($query) use ($request) {
-                        $query->authenticate();
+                    ->when(static::shouldAuthenticate($request), function($query) use ($request) {
+                        $query->orWhereHas('contracts', function($query) use ($request) {
+                            $query->authenticate();
+                        });
                     });
     } 
 
@@ -130,6 +132,23 @@ abstract class Resource extends BaseResource
                     })
                     ->values()
                     ->all();  
+    }
+
+    /**
+     * Build report query for the given request.
+     * 
+     * @param  \Illuminate\Http\Request $request 
+     * @return \Illuminate\Database\Eloquent\Builder           
+     */
+    public function reportQuery(Request $request)
+    {
+        return ShaghoolReport::whereHas('percapita', function($query)  {
+            $query->whereHasMorph('measurable', [static::$model], function($query) {
+               $query->when(request()->filled('resourceId'), function($query) {
+                    $query->whereKey(request()->input('resourceId'));
+               });
+            });
+        });
     }
 
     /**
@@ -207,22 +226,5 @@ abstract class Resource extends BaseResource
             ->width('1/2')
             ->onlyOnDetail(),
         ]; 
-    }
-
-    /**
-     * Build report query for the given request.
-     * 
-     * @param  \Illuminate\Http\Request $request 
-     * @return \Illuminate\Database\Eloquent\Builder           
-     */
-    public function reportQuery(Request $request)
-    {
-        return ShaghoolReport::whereHas('percapita', function($query)  {
-            $query->whereHasMorph('measurable', [static::$model], function($query) {
-               $query->when(request()->filled('resourceId'), function($query) {
-                    $query->whereKey(request()->input('resourceId'));
-               });
-            });
-        });
     }
 }

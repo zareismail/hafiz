@@ -94,14 +94,16 @@ class Complex extends Resource
     public static function relatableQuery(NovaRequest $request, $query)
     {  
         return parent::relatableQuery($request, $query) 
-                    ->orWhereHas('buildings.contracts', function($query) use ($request) {
-                        $query->authenticate();
-                    })
-                    ->orWhereHas('buildings.apartments.contracts', function($query) use ($request) {
-                        $query->authenticate();
-                    })
-                    ->orWhereHas('buildings.areas.contracts', function($query) use ($request) {
-                        $query->authenticate();
+                    ->when(static::shouldAuthenticate($request), function($query) use ($request) {
+                        $query->orWhereHas('buildings.contracts', function($query) use ($request) {
+                            $query->authenticate();
+                        })
+                        ->orWhereHas('buildings.apartments.contracts', function($query) use ($request) {
+                            $query->authenticate();
+                        })
+                        ->orWhereHas('buildings.areas.contracts', function($query) use ($request) {
+                            $query->authenticate();
+                        });
                     });
     } 
 }
