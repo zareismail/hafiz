@@ -108,11 +108,11 @@ class Building extends Resource
     public static function relatableQuery(NovaRequest $request, $query)
     {  
         return parent::relatableQuery($request, $query) 
-                    ->when(static::shouldAuthenticate($request), function($query) use ($request) { 
-                        $query->orWhereHas('apartments.contracts', function($query) use ($request) {
+                    ->when(static::shouldAuthenticate($request), function($query) { 
+                        $query->orWhereHas('apartments.contracts', function($query) {
                             $query->authenticate();
                         })
-                        ->orWhereHas('areas.contracts', function($query) use ($request) {
+                        ->orWhereHas('areas.contracts', function($query) {
                             $query->authenticate();
                         });
                     });
