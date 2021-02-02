@@ -95,13 +95,13 @@ class Complex extends Resource
     {  
         return parent::relatableQuery($request, $query) 
                     ->when(static::shouldAuthenticate($request), function($query) use ($request) {
-                        $query->orWhereHas('buildings.contracts', function($query) use ($request) {
+                        $query->orWhereHas('buildings.contracts', function($query) {
                             $query->authenticate();
                         })
-                        ->orWhereHas('buildings.apartments.contracts', function($query) use ($request) {
+                        ->orWhereHas('buildings.apartments.contracts', function($query) {
                             $query->authenticate();
                         })
-                        ->orWhereHas('buildings.areas.contracts', function($query) use ($request) {
+                        ->orWhereHas('buildings.areas.contracts', function($query) {
                             $query->authenticate();
                         });
                     });
