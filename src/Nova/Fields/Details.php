@@ -33,19 +33,28 @@ class Details extends MergeValue
 
 	public function fields()
 	{
-		return 	$this->groups()->filter(function($group) {
+		$avaialbeFields = $this->groups()->filter(function($group) {
 			return $group->details->isNotEmpty();
-		})->map([$this, 'mapIntoComplexField'])->filter()->values();
+		}); 
+
+		return request()->route('field', false) 
+				? $avaialbeFields->flatMap([$this, 'avaialbeFields'])->filter()->values()
+				: $avaialbeFields->map([$this, 'mapIntoComplexField'])->filter()->values();
 	}
 
 	/**
-	 * Get the avaialbel detail groups.
+	 * Get the avaialbe detail groups.
 	 * 
 	 * @return \Illuminate\Support\Collection
 	 */
 	public function groups()
 	{
 		return DetailGroup::with('details')->get();
+	}
+
+	public function avaialbeFields(DetailGroup $group)
+	{
+		return $group->details->fields($this->resource)->values()->all();
 	}
 
 	public function mapIntoComplexField(DetailGroup $group)
