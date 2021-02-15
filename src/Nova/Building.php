@@ -167,4 +167,17 @@ class Building extends Resource
             $query->where('name', 'like', '%'.$search.'%'); 
         });
     }
+
+    /**
+     * Get the cards available on the entity.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function cards(Request $request)
+    {  
+        return array_merge([
+            Metrics\CreatedBuildings::make(),
+        ], parent::cards($request));  
+    }
 }

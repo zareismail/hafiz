@@ -272,4 +272,17 @@ class Apartment extends Resource
             });              
         });
     }
+
+    /**
+     * Get the cards available on the entity.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function cards(Request $request)
+    {  
+        return array_merge([
+            Metrics\CreatedApartments::make(),
+        ], parent::cards($request));  
+    }
 }

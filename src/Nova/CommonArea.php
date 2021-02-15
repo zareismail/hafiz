@@ -141,4 +141,17 @@ class CommonArea extends Resource
             Building::applyRelatedSearch($query->where('name', 'like', '%'.$search.'%'), $search); 
         });
     }
+
+    /**
+     * Get the cards available on the entity.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function cards(Request $request)
+    {  
+        return array_merge([
+            Metrics\CreatedAreas::make(),
+        ], parent::cards($request));  
+    }
 }

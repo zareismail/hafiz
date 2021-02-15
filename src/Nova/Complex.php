@@ -106,4 +106,17 @@ class Complex extends Resource
                         });
                     });
     } 
+
+    /**
+     * Get the cards available on the entity.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function cards(Request $request)
+    {  
+        return array_merge([
+            Metrics\CreatedComplexes::make(),
+        ], parent::cards($request));  
+    }
 }
