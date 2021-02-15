@@ -4,7 +4,7 @@ namespace Zareismail\Hafiz\Nova\Metrics;
 
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
-use Zareismail\Hafiz\Models\HafizArea;
+use Zareismail\Hafiz\Models\HafizCommonArea;
 
 class CreatedAreas extends CreatedResources
 {  
@@ -16,6 +16,6 @@ class CreatedAreas extends CreatedResources
      */
     public function newQuery(NovaRequest $request)
     {
-        return HafizArea::authenticate();
+        return HafizCommonArea::authenticate();
     }
 }
