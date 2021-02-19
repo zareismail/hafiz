@@ -34,7 +34,7 @@ class Apartment extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'number'
+        'id', 'number', 'code', 'building_id', 'auth_id'
     ];
 
     /**
