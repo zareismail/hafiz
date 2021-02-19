@@ -42,7 +42,7 @@ class Apartment extends Resource
      *
      * @var array
      */
-    public static $with = ['costs', 'details', 'building', 'contracts', 'percapitas.resource.unit'];
+    public static $with = ['building.complex', 'details', 'media'];
 
     /**
      * Get the fields displayed by the resource.
@@ -55,14 +55,11 @@ class Apartment extends Resource
     	return [
     		ID::make(), 
 
-            Number::make(__('Code'), function() {
-                return "<b>{$this->code}</b>";
-            })->asHtml()->exceptOnForms(),
-
             BelongsTo::make(__('User'), 'auth', User::class)
                 ->withoutTrashed()
                 ->default($request->user()->getKey())
                 ->searchable()
+                ->hideFromIndex()
                 ->canSee(function($request) {
                     return $request->user()->can('addUser', static::newModel());
                 }),  
@@ -74,6 +71,10 @@ class Apartment extends Resource
             BelongsTo::make(__('Complex'), 'complex', Complex::class)
                 ->exceptOnForms()
                 ->showCreateRelationButton(),
+
+            Number::make(__('Code'), function() {
+                return "<b>{$this->code}</b>";
+            })->asHtml()->exceptOnForms(),
 
             Number::make(__('Floor'), 'floor')
                 ->required()
@@ -93,11 +94,11 @@ class Apartment extends Resource
                 ->min(0)
                 ->default(0),
 
-            Tags::make(__('Inventory List'), 'config->inventory')
-                ->help(__('Write inventory name and press the ENTER ...'))
-                ->placeholder(__('Write inventory name and press the ENTER ...'))
-                ->allowEditTags()
-                ->hideFromIndex(),
+            // Tags::make(__('Inventory List'), 'config->inventory')
+            //     ->help(__('Write inventory name and press the ENTER ...'))
+            //     ->placeholder(__('Write inventory name and press the ENTER ...'))
+            //     ->allowEditTags()
+            //     ->hideFromIndex(),
 
     		Trix::make(__('Description'), 'description') 
     			->help(__('Write about your apartment and their features.'))
@@ -284,5 +285,20 @@ class Apartment extends Resource
         return array_merge([
             Metrics\CreatedApartments::make(),
         ], parent::cards($request));  
+    }
+
+    /**
+     * Get the filters available on the entity.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function filters(Request $request)
+    {
+        return [
+            Filters\Complex::make(),
+
+            Filters\Building::make(),
+        ];
     }
 }

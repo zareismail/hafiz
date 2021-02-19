@@ -180,4 +180,17 @@ class Building extends Resource
             Metrics\CreatedBuildings::make(),
         ], parent::cards($request));  
     }
+
+    /**
+     * Get the filters available on the entity.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function filters(Request $request)
+    {
+        return [
+            Filters\Complex::make(), 
+        ];
+    }
 }

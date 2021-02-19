@@ -154,4 +154,19 @@ class CommonArea extends Resource
             Metrics\CreatedAreas::make(),
         ], parent::cards($request));  
     }
+
+    /**
+     * Get the filters available on the entity.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function filters(Request $request)
+    {
+        return [
+            Filters\Complex::make(),
+
+            Filters\Building::make(),
+        ];
+    }
 }
