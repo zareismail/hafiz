@@ -42,7 +42,7 @@ class Apartment extends Resource
      *
      * @var array
      */
-    public static $with = ['building.complex', 'details', 'media'];
+    public static $with = ['building', 'details', 'auth', 'media'];
 
     /**
      * Get the fields displayed by the resource.
@@ -68,9 +68,9 @@ class Apartment extends Resource
                 ->readonly($request->viaResource() === Complex::class)
                 ->searchable(),
 
-            BelongsTo::make(__('Complex'), 'complex', Complex::class)
-                ->exceptOnForms()
-                ->showCreateRelationButton(),
+            // BelongsTo::make(__('Complex'), 'complex', Complex::class)
+            //     ->exceptOnForms()
+            //     ->showCreateRelationButton(),
 
             Number::make(__('Code'), function() {
                 return "<b>{$this->code}</b>";
