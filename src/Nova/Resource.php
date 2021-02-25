@@ -3,12 +3,14 @@
 namespace Zareismail\Hafiz\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\TrashedStatus;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Coroowicaksono\ChartJsIntegration\LineChart;
 use Zareismail\NovaContracts\Nova\Resource as BaseResource;
 use Zareismail\Shaghool\Nova\MeasurableResource;
 use Zareismail\Shaghool\Models\ShaghoolReport;
-use Zareismail\NovaPolicy\Helper;
+use Zareismail\Bonchaq\Nova\Contract;
+use Zareismail\Hafiz\Helper;
 
 abstract class Resource extends BaseResource
 { 
@@ -41,6 +43,32 @@ abstract class Resource extends BaseResource
     public static $search = [
         'id', 'name'
     ];
+
+    /**
+     * Build an "index" query for the given resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string|null  $search
+     * @param  array  $filters
+     * @param  array  $orderings
+     * @param  string  $withTrashed
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function buildIndexQuery(NovaRequest $request, $query, $search = null,
+                                      array $filters = [], array $orderings = [],
+                                      $withTrashed = TrashedStatus::DEFAULT)
+    { 
+        if(Helper::isTenant($request->user())) {
+            $query = $query->tap(function($query) {
+                $query->whereHas('contracts', function($query) {
+                    Contract::buildIndexQuery($request, $query, $search, $filters, $orderings, $withTrashed);
+                });
+            });
+        }
+
+        return parent::buildIndexQuery($request, $query, $search, $filters, $orderings, $withTrashed);
+    } 
 
     /**
      * Build an "index" query for the given resource.

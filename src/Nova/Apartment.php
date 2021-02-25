@@ -138,27 +138,7 @@ class Apartment extends Resource
     public function title()
     { 
         return forward_static_call([new Building($this->building), 'title']).': '.$this->number;
-    }
-
-    /**
-     * Build an "index" query for the given resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        if(Helper::isTenant($request->user())) {
-            return $query->tap(function($query) {
-                $query->whereHas('contracts', function($query) {
-                    $query->authenticate();
-                });
-            });
-        }
-
-        return parent::indexQuery($request, $query); 
-    }
+    } 
 
     /**
      * Determine if the resource should be available for the given request.
