@@ -98,7 +98,9 @@ class Apartment extends Resource
                 return new Fields\PerCapitas($this->percapitas);
             }), 
 
-            new Fields\Details($this),  
+            $this->when($request->route('resource') === static::uriKey(), function() {
+                return new Fields\Details($this);
+            }),  
 
             Medialibrary::make(__('Gallery'), 'gallery')
                 ->attachExisting()
@@ -212,8 +214,8 @@ class Apartment extends Resource
             function($query) use ($matches, $buildingSerachCallback) {
                 parent::applySearch($query, $matches[0])->whereHas('building', $buildingSerachCallback);
             });
-    } 
-
+    }  
+    
     /**
      * Apply the search query to the query.
      *
