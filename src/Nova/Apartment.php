@@ -68,10 +68,6 @@ class Apartment extends Resource
                 ->readonly($request->viaResource() === Complex::class)
                 ->searchable(),
 
-            // BelongsTo::make(__('Complex'), 'complex', Complex::class)
-            //     ->exceptOnForms()
-            //     ->showCreateRelationButton(),
-
             Number::make(__('Code'), function() {
                 return "<b>{$this->code}</b>";
             })->asHtml()->exceptOnForms(),
@@ -93,12 +89,6 @@ class Apartment extends Resource
     			->help(__('What is the number of your apartment?'))
                 ->min(0)
                 ->default(0),
-
-            // Tags::make(__('Inventory List'), 'config->inventory')
-            //     ->help(__('Write inventory name and press the ENTER ...'))
-            //     ->placeholder(__('Write inventory name and press the ENTER ...'))
-            //     ->allowEditTags()
-            //     ->hideFromIndex(),
 
     		Trix::make(__('Description'), 'description') 
     			->help(__('Write about your apartment and their features.'))
@@ -210,7 +200,7 @@ class Apartment extends Resource
 
             Building::buildIndexQuery(app(NovaRequest::class), $query, $search); 
         };
-        
+
         preg_match('/([0-9]+)$/', $search, $matches);
 
 
