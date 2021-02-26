@@ -29,6 +29,15 @@ class Building extends Resource
     public static $with = ['costs', 'details', 'percapitas.resource.unit'];
 
     /**
+     * The columns that should be searched.
+     *
+     * @var array
+     */
+    public static $search = [
+        'id', 'name', 'number'
+    ];
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
