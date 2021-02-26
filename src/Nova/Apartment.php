@@ -113,6 +113,10 @@ class Apartment extends Resource
             Medialibrary::make(__('Gallery'), 'gallery')
                 ->attachExisting()
                 ->autouploading()
+                ->mediaOnIndex(function($resource, $collectionName) {
+                    return $resource->media->where('collection_name', $collectionName) 
+                                ->sortBy('order_column');
+                })
                 ->attachExisting(function ($query, $request, $model) {
                     $query->authenticate();
                 }), 

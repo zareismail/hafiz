@@ -18,6 +18,13 @@ class Details extends MergeValue
 	 */
 	public $resource;
 
+	/**
+	 * List of detail groups.
+	 * 
+	 * @var \Illuminate\Database\Eloquent\Collection
+	 */
+	public static $cachedDetailGroups;
+
     /**
      * Create new merge value instance.
      *
@@ -49,7 +56,11 @@ class Details extends MergeValue
 	 */
 	public function groups()
 	{
-		return DetailGroup::with('details')->get();
+		if(! isset(static::$cachedDetailGroups)) {
+			static::$cachedDetailGroups = DetailGroup::with('details')->get();
+		}
+
+		return static::$cachedDetailGroups;
 	}
 
 	public function avaialbeFields(DetailGroup $group)
