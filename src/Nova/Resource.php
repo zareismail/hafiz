@@ -59,13 +59,13 @@ abstract class Resource extends BaseResource
                                       array $filters = [], array $orderings = [],
                                       $withTrashed = TrashedStatus::DEFAULT)
     { 
-        if(Helper::isTenant($request->user())) {
-            $query = $query->tap(function($query) {
-                $query->whereHas('contracts', function($query) {
-                    Contract::buildIndexQuery($request, $query, $search, $filters, $orderings, $withTrashed);
-                });
-            });
-        }
+        // if(Helper::isTenant($request->user())) {
+        //     $query = $query->tap(function($query) use ($request, $search) {
+        //         $query->whereHas('contracts', function($query) use ($request, $search) {
+        //             Contract::buildIndexQuery($request, $query, $search);
+        //         });
+        //     });
+        // }
 
         return parent::buildIndexQuery($request, $query, $search, $filters, $orderings, $withTrashed);
     } 
