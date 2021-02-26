@@ -10,6 +10,13 @@ class HafizApartment extends Model implements Cascade
 	use BelongsToThrough;
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['building'];
+
+    /**
      * The attributes that should be cast.
      *
      * @var array
