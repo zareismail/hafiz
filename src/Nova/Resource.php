@@ -42,33 +42,25 @@ abstract class Resource extends BaseResource
      */
     public static $search = [
         'id', 'name'
-    ];
+    ]; 
 
     /**
-     * Build an "index" query for the given resource.
+     * Authenticate the query for the given request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  string|null  $search
-     * @param  array  $filters
-     * @param  array  $orderings
-     * @param  string  $withTrashed
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function buildIndexQuery(NovaRequest $request, $query, $search = null,
-                                      array $filters = [], array $orderings = [],
-                                      $withTrashed = TrashedStatus::DEFAULT)
-    { 
-        // if(Helper::isTenant($request->user())) {
-        //     $query = $query->tap(function($query) use ($request, $search) {
-        //         $query->whereHas('contracts', function($query) use ($request, $search) {
-        //             Contract::buildIndexQuery($request, $query, $search);
-        //         });
-        //     });
-        // }
-
-        return parent::buildIndexQuery($request, $query, $search, $filters, $orderings, $withTrashed);
-    } 
+    public static function authenticateQuery(NovaRequest $request, $query)
+    {
+        return $query->where(function($query) use ($request) {
+            $query->when(static::shouldAuthenticate($request, $query), function($query) use ($request) {
+                $query->authenticate()->orWhereHas('contracts', function($query) use ($request) {
+                    Contract::buildIndexQuery($request, $query);
+                });
+            });
+        });
+    }
 
     /**
      * Build an "index" query for the given resource.
