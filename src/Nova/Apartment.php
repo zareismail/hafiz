@@ -203,10 +203,26 @@ class Apartment extends Resource
      * @param  string  $search
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function applyContractSearch($query, $search)
-    { 
-        static::applyRelatedSearch($query, $search);
-    }
+    protected static function applySearch($query, $search)
+    {   
+        $buildingSerachCallback = function($query) use ($search) {
+            $search = trim(preg_replace('/[0-9]+$/', '', $search));
+
+            Building::buildIndexQuery(app(NovaRequest::class), $query, $search); 
+        };
+        
+        preg_match('/([0-9]+)$/', $search, $matches);
+
+
+        return $query->when(
+            ! isset($matches[0]), 
+            function($query) use ($search, $buildingSerachCallback) {
+                parent::applySearch($query, $search)->orWhereHas('building', $buildingSerachCallback);
+            }, 
+            function($query) use ($matches, $buildingSerachCallback) {
+                parent::applySearch($query, $matches[0])->whereHas('building', $buildingSerachCallback);
+            });
+    } 
 
     /**
      * Apply the search query to the query.
