@@ -56,7 +56,7 @@ abstract class Resource extends BaseResource
         return $query->where(function($query) use ($request) {
             $query->when(static::shouldAuthenticate($request, $query), function($query) use ($request) {
                 $query->authenticate()->orWhereHas('contracts', function($query) use ($request) {
-                    Contract::buildIndexQuery($request, $query);
+                    $query->authenticate();
                 });
             });
         });
