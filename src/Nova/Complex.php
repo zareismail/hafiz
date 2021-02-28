@@ -5,8 +5,7 @@ namespace Zareismail\Hafiz\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Laravel\Nova\Fields\{ID, Text, Slug, Trix, BelongsTo, HasMany, MorphMany, HasManyThrough};
-use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
+use Laravel\Nova\Fields\{ID, Text, Slug, Trix, BelongsTo, HasMany, MorphMany, HasManyThrough}; 
 use Zareismail\Fields\BelongsTo as CascadeTo;
 use Zareismail\NovaContracts\Nova\User;
 use Zareismail\NovaLocation\Nova\Zone;
@@ -27,7 +26,7 @@ class Complex extends Resource
      *
      * @var array
      */
-    public static $with = ['details', 'costs', 'percapitas.resource.unit'];
+    public static $with = ['details', 'auth'];
 
     /**
      * Get the fields displayed by the resource.
@@ -69,10 +68,8 @@ class Complex extends Resource
             }),  
 
             new Fields\Details($this),  
-             
-            Medialibrary::make(__('Gallery'), 'gallery')
-                ->attachExisting()
-                ->autouploading(), 
+
+            $this->mergeGalleryField(),
 
             Panel::make(__('Contacts Details'), $this->filter([
                 new Fields\ContactsDetails($this)

@@ -5,8 +5,7 @@ namespace Zareismail\Hafiz\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Laravel\Nova\Fields\{ID, Text, Slug, Number, Trix, BelongsTo, HasMany, MorphMany};
-use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
+use Laravel\Nova\Fields\{ID, Text, Slug, Number, Trix, BelongsTo, HasMany, MorphMany}; 
 use Zareismail\Fields\BelongsTo as CascadeTo;
 use Zareismail\NovaContracts\Nova\User;
 use Zareismail\NovaLocation\Nova\Zone;
@@ -26,7 +25,7 @@ class Building extends Resource
      *
      * @var array
      */
-    public static $with = ['costs', 'details', 'percapitas.resource.unit'];
+    public static $with = ['details', 'auth', 'media'];
 
     /**
      * The columns that should be searched.
@@ -90,9 +89,7 @@ class Building extends Resource
 
             new Fields\Details($this),
 
-            Medialibrary::make(__('Gallery'), 'gallery')
-                ->attachExisting()
-                ->autouploading(), 
+            $this->mergeGalleryField(),
 
             Panel::make(__('Contacts Details'), $this->filter([
                 new Fields\ContactsDetails($this)

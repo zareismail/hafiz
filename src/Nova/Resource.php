@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\TrashedStatus;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Coroowicaksono\ChartJsIntegration\LineChart;
+use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary; 
 use Zareismail\NovaContracts\Nova\Resource as BaseResource;
 use Zareismail\Shaghool\Nova\MeasurableResource;
 use Zareismail\Shaghool\Models\ShaghoolReport;
@@ -116,6 +117,27 @@ abstract class Resource extends BaseResource
                         });
                     });
     } 
+
+    /**
+     * Merge gallery file into the resource fields.
+     * 
+     * @return \Laravel\Nova\Fields\Field
+     */
+    public function mergeGalleryField()
+    {
+        return $this->merge([
+            Medialibrary::make(__('Gallery'), 'gallery')
+                ->attachExisting()
+                ->autouploading()
+                ->mediaOnIndex(function($resource, $collectionName) {
+                    return $resource->media->where('collection_name', $collectionName) 
+                                ->sortBy('order_column');
+                })
+                ->attachExisting(function ($query, $request, $model) {
+                    $query->authenticate();
+                }),
+        ]);
+    }
 
     /**
      * Get the actions available on the entity.

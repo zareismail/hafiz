@@ -4,7 +4,6 @@ namespace Zareismail\Hafiz\Nova;
 
 use Illuminate\Http\Request; 
 use Laravel\Nova\Fields\{ID, Text, Number, Trix, BelongsTo, HasMany};
-use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary; 
 use Zareismail\Fields\BelongsTo as CascadeTo;
 use Zareismail\NovaContracts\Nova\User;
 
@@ -38,7 +37,7 @@ class CommonArea extends Resource
      *
      * @var array
      */
-    public static $with = ['details', 'costs', 'building', 'percapitas.resource.unit'];
+    public static $with = ['details', 'auth', 'building', 'media'];
 
     /**
      * Get the fields displayed by the resource.
@@ -83,12 +82,7 @@ class CommonArea extends Resource
 
             new Fields\Details($this),  
 
-            Medialibrary::make(__('Gallery'), 'gallery')
-                ->attachExisting()
-                ->autouploading()
-                ->attachExisting(function ($query, $request, $model) {
-                    $query->authenticate();
-                }), 
+            $this->mergeGalleryField(), 
     	];
     }
 

@@ -5,8 +5,7 @@ namespace Zareismail\Hafiz\Nova;
 use Illuminate\Http\Request; 
 use Laravel\Nova\Http\Requests\NovaRequest; 
 use Laravel\Nova\Fields\{ID, Heading, Number, Trix, BelongsTo, HasMany, MorphMany};
-use Superlatif\NovaTagInput\Tags;
-use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
+use Superlatif\NovaTagInput\Tags; 
 use Zareismail\Fields\{BelongsTo as CascadeBelongsTo, MorphTo as CascadeMorphTo};
 use Zareismail\NovaContracts\Nova\User;
 use Zareismail\Costable\Nova\Cost;
@@ -102,16 +101,7 @@ class Apartment extends Resource
                 return new Fields\Details($this);
             }),  
 
-            Medialibrary::make(__('Gallery'), 'gallery')
-                ->attachExisting()
-                ->autouploading()
-                ->mediaOnIndex(function($resource, $collectionName) {
-                    return $resource->media->where('collection_name', $collectionName) 
-                                ->sortBy('order_column');
-                })
-                ->attachExisting(function ($query, $request, $model) {
-                    $query->authenticate();
-                }), 
+            $this->mergeGalleryField(),
     	];
     }
 
