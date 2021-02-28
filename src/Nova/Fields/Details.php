@@ -40,13 +40,13 @@ class Details extends MergeValue
 
 	public function fields()
 	{
-		$avaialbeFields = $this->groups()->filter(function($group) {
+		$availableFields = $this->groups()->filter(function($group) {
 			return $group->details->isNotEmpty();
 		}); 
 
 		return request()->route('field', false) 
-				? $avaialbeFields->flatMap([$this, 'avaialbeFields'])->filter()->values()
-				: $avaialbeFields->map([$this, 'mapIntoComplexField'])->filter()->values();
+				? $availableFields->flatMap([$this, 'availableFields'])->filter()->values()
+				: $availableFields->map([$this, 'mapIntoComplexField'])->filter()->values();
 	}
 
 	/**
@@ -63,7 +63,7 @@ class Details extends MergeValue
 		return static::$cachedDetailGroups;
 	}
 
-	public function avaialbeFields(DetailGroup $group)
+	public function availableFields(DetailGroup $group)
 	{
 		return $group->details->fields($this->resource)->values()->all();
 	}
