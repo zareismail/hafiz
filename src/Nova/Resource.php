@@ -142,7 +142,7 @@ abstract class Resource extends BaseResource
      */
     public function cards(Request $request)
     {  
-        return static::authenticateQuery($request, $this->reportQuery($request))
+        return $this->reportQuery($request)
                     ->with('percapita.resource')
                     ->whereDate('target_date', '>=', now()->subMonths(12))
                     ->get()
@@ -166,6 +166,8 @@ abstract class Resource extends BaseResource
             $query->whereHasMorph('measurable', [static::$model], function($query) {
                $query->when(request()->filled('resourceId'), function($query) {
                     $query->whereKey(request()->input('resourceId'));
+               }, function($query) {
+                    static::buildIndexQuery(app(NovaRequest::class), $query);
                });
             });
         });
