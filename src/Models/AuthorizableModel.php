@@ -2,35 +2,11 @@
 
 namespace Zareismail\Hafiz\Models;
  
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\{Model, SoftDeletes};
-use Zareismail\NovaContracts\Auth\Authorizable;  
-use Zareismail\NovaContracts\Auth\Authorization;
+use Zareismail\NovaContracts\Models\AuthorizableModel as Model; 
 
-class AuthorizableModel extends Model implements Authorizable
+class AuthorizableModel extends Model 
 {
-    use HasFactory, SoftDeletes, Authorization;
-
-	/**
-	 * Indicate Model Authenticatable.
-	 * 
-	 * @return mixed
-	 */
-	public function owner()
-	{
-		return $this->auth();
-	}
-
-    /**
-     * Get a relationship.
-     *
-     * @param  string  $key
-     * @return mixed
-     */
-    public function getRelationValue($key)
-    {  
-    	return parent::getRelationValue(
-    		$key == 'owner' && ! $this->relationLoaded('owner') ? 'auth' : $key
-    	);
-    }
+    use HasFactory, SoftDeletes; 
 }
