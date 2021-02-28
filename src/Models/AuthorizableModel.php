@@ -20,4 +20,17 @@ class AuthorizableModel extends Model implements Authorizable
 	{
 		return $this->auth();
 	}
+
+    /**
+     * Get a relationship.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function getRelationValue($key)
+    {  
+    	return parent::getRelationValue(
+    		$key == 'owner' && ! $this->relationLoaded('owner') ? 'auth' : $key
+    	);
+    }
 }
