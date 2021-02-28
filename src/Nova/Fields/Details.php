@@ -57,7 +57,7 @@ class Details extends MergeValue
 	public function groups()
 	{
 		if(! isset(static::$cachedDetailGroups)) {
-			static::$cachedDetailGroups = DetailGroup::with('details')->get();
+			static::$cachedDetailGroups = DetailGroup::with('details')->whereKey((array) Places::option('shown_on_'.$this->resource::uriKey()))->get();
 		}
 
 		return static::$cachedDetailGroups;
@@ -75,8 +75,7 @@ class Details extends MergeValue
                 return collect($fields)->each->resolveUsing([$this, 'resolveUsing']);
             })
             ->expansionOverflow(intval(Places::option('expansion_overflow', 2)))
-            ->groupOverflow(intval(Places::option('group_overflow', 2)))
-            ->hideFromIndex(! Places::isShownOn($this->resource, $group));  
+            ->groupOverflow(intval(Places::option('group_overflow', 2)));  
 
         }
 	}
