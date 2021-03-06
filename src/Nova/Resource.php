@@ -151,7 +151,7 @@ abstract class Resource extends BaseResource
             Actions\SendNotification::make()
                 ->showOnTableRow()
                 ->canSee(function($request) {
-                    return $request->user()->can('sendNotificatino', $this->resource);
+                    return static::authorizedTo($request, 'sendNotification'); 
                 }), 
         ];
     }

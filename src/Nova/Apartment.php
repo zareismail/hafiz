@@ -93,13 +93,13 @@ class Apartment extends Resource
     			->help(__('Write about your apartment and their features.'))
     			->withFiles('public'), 
 
-            $this->when($request->isResourceDetailRequest() && $this->percapitas->isNotEmpty(), function() {
-                return new Fields\PerCapitas($this->percapitas);
-            }), 
+            // $this->when($request->isResourceDetailRequest() && $this->percapitas->isNotEmpty(), function() {
+            //     return new Fields\PerCapitas($this->percapitas);
+            // }), 
 
-            $this->when($request->route('resource') === static::uriKey(), function() {
-                return new Fields\Details($this);
-            }),  
+            // $this->when($request->route('resource') === static::uriKey(), function() {
+            //     return new Fields\Details($this);
+            // }),  
 
             $this->mergeGalleryField(),
     	];
